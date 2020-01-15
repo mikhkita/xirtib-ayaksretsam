@@ -186,6 +186,26 @@ $version = "1"; ?>
 			<div class="b-block b-menu-desktop clearfix">
 				<div class="b-menu-section">
 					<a href="#" class="main-item">Каталог</a>
+					<?$APPLICATION->IncludeComponent("bitrix:catalog.section.list", "sections-menu", Array(
+	"VIEW_MODE" => "TEXT",	// Вид списка подразделов
+		"SHOW_PARENT_NAME" => "Y",	// Показывать название раздела
+		"IBLOCK_TYPE" => "content",	// Тип инфоблока
+		"IBLOCK_ID" => "1",	// Инфоблок
+		"SECTION_ID" => "",	// ID раздела
+		"SECTION_CODE" => "",	// Код раздела
+		"SECTION_URL" => "",	// URL, ведущий на страницу с содержимым раздела
+		"COUNT_ELEMENTS" => "Y",	// Показывать количество элементов в разделе
+		"TOP_DEPTH" => "2",	// Максимальная отображаемая глубина разделов
+		"SECTION_FIELDS" => "",	// Поля разделов
+		"SECTION_USER_FIELDS" => "",	// Свойства разделов
+		"ADD_SECTIONS_CHAIN" => "Y",	// Включать раздел в цепочку навигации
+		"CACHE_TYPE" => "A",	// Тип кеширования
+		"CACHE_TIME" => "36000000",	// Время кеширования (сек.)
+		"CACHE_NOTES" => "",
+		"CACHE_GROUPS" => "Y",	// Учитывать права доступа
+	),
+	false
+);?>
 					<ul>
 						<li><a href="#">Новогодняя коллекция</a></li>
 						<li><a href="#">Новогодняя коллекция</a></li>
