@@ -159,7 +159,7 @@ $version = "1"; ?>
 				{{/if}}
 			</script>
 			<div class="b-search-content">
-				<form method="GET" action="search.php" class="b-search-form" id="b-search-form">
+				<form method="GET" action="/send/search.php" class="b-search-form" id="b-search-form">
 					<div class="b-input-search">
 						<button class="b-search-icon icon"></button>
 						<input type="text" name="q" class="input-search" placeholder="Поиск по сайту">
@@ -240,11 +240,11 @@ $version = "1"; ?>
 					<li><a href="#">Контакты</a></li>
 					<li><a href="#">Политика конфиденциальности</a></li>
 				</ul>
-				<ul class="b-social clearfix">
-					<li><a href="vk.com" class="icon soc-vk">Вконтакте</a></li>
-					<li><a href="facebook.com" class="icon soc-facebook">Facebook</a></li>
-					<li><a href="instagram.com" class="icon soc-instagram">Instagram</a></li>
-					<li><a href="youtube.com" class="icon soc-youtube">Youtube</a></li>
+				<ul class="b-social">
+					<li><a href="//vk.com" class="icon soc-vk">Вконтакте</a></li>
+					<li><a href="//facebook.com" class="icon soc-facebook">Facebook</a></li>
+					<li><a href="//instagram.com" class="icon soc-instagram">Instagram</a></li>
+					<li><a href="//youtube.com" class="icon soc-youtube">Youtube</a></li>
 				</ul>
 				<div class="b-menu-mobile-list slide-cont"></div>
 			</div>

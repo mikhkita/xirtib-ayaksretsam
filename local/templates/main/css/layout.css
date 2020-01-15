@@ -206,7 +206,8 @@ input:-moz-placeholder {
 .b-panel-page{
 
 }	
-	.b-menu-overlay{
+	.b-menu-overlay,
+	.b-cart-overlay{
 	    -webkit-transition: opacity .3s ease-out, visibility .3s ease-out;
 	    -moz-transition: opacity .3s ease-out, visibility .3s ease-out;
 	    -ms-transition: opacity .3s ease-out, visibility .3s ease-out;
@@ -222,7 +223,10 @@ input:-moz-placeholder {
 	    z-index: 11;
 	    background-color: rgba(0, 0, 0, 0.25);
 	}
-	.cart-open .b-menu-overlay,
+	.b-cart-overlay{
+		z-index: 99;
+	}
+	.cart-open .b-cart-overlay,
 	.menu-open .b-menu-overlay{
 		opacity: 1;
 		visibility: visible;
@@ -898,6 +902,9 @@ input:-moz-placeholder {
 				font-size: 24px;
     			line-height: 32px;
 			}
+			.b-search-result-list.b-catalog-list{
+				margin-bottom: 80px;
+			}
 
 .search-open .b-header .b-search-icon:before{
 	content: '\e903';
@@ -912,7 +919,7 @@ input:-moz-placeholder {
 
 @media screen and (max-width: 960px) {
 	.b-search-form{
-		width: calc(100% - 180px);;
+		width: calc(100% - 180px);
 	}
 	.b-search-result-content .b-catalog-menu{
 		width: 100%;
@@ -933,6 +940,9 @@ input:-moz-placeholder {
 	.search-empty{
 		width: calc(100% - 32px);
 		text-align: center;
+	}
+	.b-search-result-list.b-catalog-list{
+		margin-bottom: 30px;
 	}
 }
 
@@ -986,7 +996,6 @@ input:-moz-placeholder {
 	position: absolute;
 	z-index: 15;
 	width: 100%;
-	padding: 60px 0 80px 0;
 	background-color: #FFF;
 	opacity: 0;
 	visibility: hidden;
@@ -1011,37 +1020,40 @@ input:-moz-placeholder {
 .menu-open .b-menu-icon:before{
 	content: '\e903';
 }
-	.b-menu-section{
-		width: 25%;
-    	float: left;
-    	padding-right: 40px;
+	.b-menu-desktop{
+		padding: 60px 0 80px 0;
 	}
-		.b-menu-section .main-item{
-			display: inline-block;
-			font-family: 'GothamPro-Medium';
-			font-size: 28px;
-			line-height: 40px;
-			color: #21201F;
-			margin-bottom: 30px;
+		.b-menu-section{
+			width: 25%;
+	    	float: left;
+	    	padding-right: 40px;
 		}
-		.b-menu-section ul{
-
-		}
-			.b-menu-section ul li{
+			.b-menu-section .main-item{
+				display: inline-block;
+				font-family: 'GothamPro-Medium';
+				font-size: 28px;
+				line-height: 40px;
+				color: #21201F;
+				margin-bottom: 30px;
+			}
+			.b-menu-section ul{
 
 			}
-				.b-menu-section ul li a{
-    				display: inline-block;
-    				margin-bottom: 24px;
-    				font-size: 18px;
-    				line-height: 24px;
-				}
-				.b-menu-section ul li:last-child a{
-					margin-bottom: 0;
-				}
+				.b-menu-section ul li{
 
+				}
+					.b-menu-section ul li a{
+	    				display: inline-block;
+	    				margin-bottom: 24px;
+	    				font-size: 18px;
+	    				line-height: 24px;
+					}
+					.b-menu-section ul li:last-child a{
+						margin-bottom: 0;
+					}
 .b-menu-mobile{
-	padding: 0 32px;
+	overflow: auto;
+	padding: 16px 32px 32px 32px;
 }
 	.b-menu-mobile .b-menu-mobile-list{
 		
@@ -1109,7 +1121,7 @@ input:-moz-placeholder {
 		position: relative;
 		z-index: 20;
 		display: inline-block;
-		padding-left: 50px;
+		padding-left: 52px;
 		margin-bottom: 20px;
 		font-size: 24px;
     	line-height: 32px;
@@ -1117,10 +1129,10 @@ input:-moz-placeholder {
 	.b-menu-mobile .slide-cont h3 .b-arrow-left{
 		position: absolute;
     	top: 4px;
-    	left: 18px;
+    	left: 20px;
 	}
 	.b-menu-mobile .slide-cont ul{
-		padding: 0 16px 0 50px;
+		padding: 0 16px 0 52px;
 	}
 		.b-menu-mobile .slide-cont ul li{
 			padding: 0;
@@ -1153,23 +1165,31 @@ input:-moz-placeholder {
 	}
 
 .b-social{
+	max-width: 310px;
+	display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+	margin-top: 50px;
 	margin-bottom: 20px;
 }
 	.b-social .icon:before{
 		color: #B7968B;
 	}
 	.b-social li{
-		display: inline-block;
-		margin-right: 50px;
-	}
-	.b-social li:last-child{
-		margin-right: 0;
+
 	}
 		.b-social li a{
 			font-size: 0px !important;
 			width: 30px;
 			height: 30px;
 			display: block;
+		}
+		.b-social li a.icon:before{
+			width: auto;
+			height: auto;
 		}
 
 .soc-vk:before{
@@ -1190,7 +1210,7 @@ input:-moz-placeholder {
 }
 
 @media screen and (max-width: 1280px){
-	.b-menu{
+	.b-menu-desktop{
 		padding: 40px 0 60px 0;
 	}
 		.b-menu-section {
@@ -1208,7 +1228,7 @@ input:-moz-placeholder {
 }
 
 @media screen and (max-width: 960px){
-	.b-menu {
+	.b-menu-desktop {
 	    padding: 24px 0 32px 0;
 	}
 		.b-menu-section {

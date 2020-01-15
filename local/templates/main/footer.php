@@ -39,11 +39,12 @@
 			<div class="b-footer-bottom">
 				<div class="b-footer-bottom-item">© 2019 Мастерская. Все права защищены</div>
 				<div class="b-footer-bottom-item politics"><a href="/politics">Политика конфиденциальности</a></div>
-				<div class="b-footer-bottom-item redder"><a href="redder.pro"></a></div>
+				<div class="b-footer-bottom-item redder"><a href="http://redder.pro"></a></div>
 			</div>
 		</div>
 	</div>
 	<div class="b-menu-overlay" id="b-menu-overlay"></div>
+	<div class="b-cart-overlay" id="b-cart-overlay"></div>
 </div>
 <div style="display:none;">
 	<a href="#b-popup-error" class="b-error-link fancy" style="display:none;"></a>
@@ -81,15 +82,18 @@
 <script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false&key=AIzaSyD6Sy5r7sWQAelSn-4mu2JtVptFkEQ03YI"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.sticky.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.touch.min.js"></script>
-<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.maskedinput.min.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/slick.min.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitCarousel.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitAnimate.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/slideout.min.js"></script>
-<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/mask.js"></script>
+<? if( !(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')!==false || strpos($_SERVER['HTTP_USER_AGENT'],'rv:11.0')!==false) ): ?>
+	<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/imask.min.js"></script>
+<? else: ?>
+	<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.maskedinput.min.js"></script>
+<? endif; ?>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/template7.min.js"></script>
-<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitSend.js"></script>
+<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitSend.js?<?=$version?>"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/main.js?<?=$version?>"></script>
 </body>
 </html>

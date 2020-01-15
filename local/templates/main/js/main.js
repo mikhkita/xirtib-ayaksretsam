@@ -21,13 +21,26 @@ $(document).ready(function(){
 
         if( myWidth > 1199 ){
             isDesktop = true;
+            isTablet = false;
+            isMobile = false;
         }else if( myWidth > 767 ){
+            isDesktop = false;
             isTablet = true;
+            isMobile = false;
         }else{
+            isDesktop = false;
+            isTablet = false;
             isMobile = true;
         }
 
         positionSearch();
+
+        //Пересчитать высоту мобильного меню
+        if(isMobile){
+            $(".b-menu-mobile").css("height", String(window.innerHeight - $(".b-header").outerHeight()) + "px");
+        }else{
+            $(".b-menu-mobile").css("height", "auto");
+        }
 
         // if(heightOrig && !isMobile) {
         //     var docHeight = (myHeight - 40 > heightOrig) ? heightOrig : myHeight - 40;
@@ -279,8 +292,8 @@ $(document).ready(function(){
         $('html').addClass('cart-open');
     });
 
-    $('.b-menu-overlay').on('click', function(){
-        $('html').removeClass('cart-open menu-open');
+    $('.b-cart-overlay').on('click', function(){
+        $('html').removeClass('cart-open');
     });
 
     $('.b-cart-close').on('click', function(){
@@ -427,12 +440,12 @@ $(document).ready(function(){
     })
 
     $(document).on('scroll', function(){
-        changeHoverImg();
+        changeHoverImg(false);
     });
 
     changeHoverImg(true);
 
-    function changeHoverImg(isFirst = false){
+    function changeHoverImg(isFirst){
 
         var flag = false;
         var arImg = [];
@@ -496,8 +509,8 @@ $(document).ready(function(){
         if($("html").hasClass("search-open")){
             closeSearch();
         }else{
-            $("html").removeClass("menu-open");//закрыть меню
             $("html").addClass("search-open");
+            closeMenu();
         }
     });
 
@@ -571,14 +584,26 @@ $(document).ready(function(){
 
 /***************** menu *************************/
 
+$('.b-menu-overlay').on('click', function(){
+    $('html').removeClass('menu-open');
+});
+
 $(".b-header .b-menu-icon").on("click", function(){
     if($("html").hasClass("menu-open")){
-        $("html").removeClass("menu-open");
+        closeMenu();
     }else{
         $("html").addClass("menu-open");
         closeSearch();
     }
 });
+
+function closeMenu () {
+    $("html").removeClass("menu-open");
+    $(".slide-cont").removeClass("open");
+    setTimeout(function () {
+       $(".slide-cont").html("");
+    }, 200);
+}
 
 $(".b-menu-mobile a").on("click", function(){
     if($(this).siblings(".b-menu-sub").length){
@@ -631,7 +656,7 @@ $(".b-menu-mobile a").on("click", function(){
     //     menuSlideout.open();
     //     $('.mobile-menu').show();
     //     $('.mobile-catalog').hide();
-    //     $(".b-menu-overlay").show();
+    //     $(".b-cart-overlay").show();
     //     return false;
     // });
 
@@ -639,39 +664,39 @@ $(".b-menu-mobile a").on("click", function(){
     //     cartSlideout.open();
     //     $('.b-cart').show();
     //     $('.mobile-menu').hide();
-    //     $(".b-menu-overlay").show();
+    //     $(".b-cart-overlay").show();
     //     return false;
     // });
 
     // $('.b-cart-close').click(function() {
     //     menuSlideout.close();
     //     cartSlideout.close();
-    //     $('.b-menu-overlay').hide();
+    //     $('.b-cart-overlay').hide();
     //     return false;
     // });
 
-    // $('.b-menu-overlay').click(function() {
+    // $('.b-cart-overlay').click(function() {
     //     menuSlideout.close();
     //     cartSlideout.close();
-    //     $('.b-menu-overlay').hide();
+    //     $('.b-cart-overlay').hide();
     //     return false;
     // });
 
     // menuSlideout.on('open', function() {
     //     $('.mobile-menu').removeClass("hide");
-    //     $(".b-menu-overlay").show();
+    //     $(".b-cart-overlay").show();
     // });
 
     // cartSlideout.on('open', function() {
     //     $('.b-cart').removeClass("hide");
-    //     $(".b-menu-overlay").show();
+    //     $(".b-cart-overlay").show();
     // });
 
     // menuSlideout.on('close', function() {
     //     setTimeout(function(){
     //         $("body").unbind("touchmove");
     //         $("#mobile-catalog, #mobile-menu").hide();
-    //         $(".b-menu-overlay").hide();
+    //         $(".b-cart-overlay").hide();
     //     },100);
     // });
 
@@ -679,7 +704,7 @@ $(".b-menu-mobile a").on("click", function(){
     //     setTimeout(function(){
     //         $("body").unbind("touchmove");
     //         $("#cart, #mobile-menu").hide();
-    //         $(".b-menu-overlay").hide();
+    //         $(".b-cart-overlay").hide();
     //     },100);
     // });
 
