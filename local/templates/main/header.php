@@ -123,7 +123,7 @@ $version = "1"; ?>
 				<div class="b-header-cont">
 					<div class="b-header-block b-header-block-left">
 						<a href="#" class="b-menu-icon icon"></a>
-						<a href="index.php" class="b-logo"></a>
+						<a href="/" class="b-logo"></a>
 					</div>
 					<div class="b-header-block b-header-block-right">
 						<a href="#" class="b-search-icon icon"></a>
