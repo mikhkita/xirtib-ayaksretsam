@@ -21,6 +21,7 @@
 		"USE_EXT" => "N",	// Подключать файлы с именами вида .тип_меню.menu_ext.php
 		"DELAY" => "N",	// Откладывать выполнение шаблона меню
 		"ALLOW_MULTI_SELECT" => "N",	// Разрешить несколько активных пунктов одновременно
+		"IS_FOOTER" => "Y"
 	),
 	false
 );?>
@@ -35,8 +36,8 @@
 						"MENU_CACHE_GET_VARS" => array(	// Значимые переменные запроса
 							0 => "",
 						),
-						"MAX_LEVEL" => "2",	// Уровень вложенности меню
-						"CHILD_MENU_TYPE" => "catalog",	// Тип меню для остальных уровней
+						"MAX_LEVEL" => "1",	// Уровень вложенности меню
+						"CHILD_MENU_TYPE" => "",	// Тип меню для остальных уровней
 						"USE_EXT" => "N",	// Подключать файлы с именами вида .тип_меню.menu_ext.php
 						"DELAY" => "N",	// Откладывать выполнение шаблона меню
 						"ALLOW_MULTI_SELECT" => "N",	// Разрешить несколько активных пунктов одновременно
@@ -44,13 +45,7 @@
 				</div>
 				<div class="b-footer-menu-column">
 					<h3>Будьте с нами</h3>
-					<ul>
-						<li><a href="//vk.com" target="_blank">Вконтакте</a></li>
-						<li><a href="//instagram.com" target="_blank">Instagram</a></li>
-						<li><a href="//twitter.com" target="_blank">Twitter</a></li>
-						<li><a href="//facebook.com" target="_blank">Facebook</a></li>
-						<li><a href="//youtube.com" target="_blank">Youtube</a></li>
-					</ul>
+					<?=includeArea("social");?>
 				</div>
 			</div>
 			<div class="b-footer-bottom">
@@ -75,7 +70,7 @@
 				<label for="tel">Введите Ваш номер телефона</label>
 				<input type="text" id="tel" name="phone" required/>
 				<label for="tel">Введите Ваш E-mail</label>
-				<input type="text" id="tel" name="email" required/>
+				<input type="text" id="email" name="email" required/>
 				<input type="hidden" name="subject" value="Заказ"/>
 				<input type="submit" style="display:none;">
 				<a href="#" class="b-btn b-blue-btn ajax">Заказать</a>

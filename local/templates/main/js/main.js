@@ -38,8 +38,10 @@ $(document).ready(function(){
         //Пересчитать высоту мобильного меню
         if(isMobile){
             $(".b-menu-mobile").css("height", String(window.innerHeight - $(".b-header").outerHeight()) + "px");
+            $(".b-menu").css("max-height", "none");
         }else{
             $(".b-menu-mobile").css("height", "auto");
+            $(".b-menu").css("max-height", String(window.innerHeight - $(".b-header").outerHeight()) + "px");
         }
 
         // if(heightOrig && !isMobile) {

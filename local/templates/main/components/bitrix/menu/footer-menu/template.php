@@ -1,11 +1,13 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
 <?if (!empty($arResult)):?>
+<?if(!isset($arParams['NO_WRAP'])):?>
 <ul>
+<?endif;?>
 
 <?
 foreach($arResult as $arItem):
-	if($arParams["MAX_LEVEL"] == 1 && $arItem["DEPTH_LEVEL"] > 1) 
+	if(isset($arParams["IS_FOOTER"]) && $arItem["LINK"] == "/politics/")
 		continue;
 ?>
 	<?if($arItem["SELECTED"]):?>
@@ -16,5 +18,7 @@ foreach($arResult as $arItem):
 	
 <?endforeach?>
 
+<?if(!isset($arParams['NO_WRAP'])):?>
 </ul>
+<?endif;?>
 <?endif?>

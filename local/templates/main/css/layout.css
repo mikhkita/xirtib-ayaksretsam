@@ -964,7 +964,7 @@ input:-moz-placeholder {
 		line-height: 28px;
 	}
 	.b-search-result{
-		margin-top: 60px;
+		margin-top: 40px;
 	}
 	.b-search-result .search-preloader{
 		top: -20px;
@@ -975,6 +975,9 @@ input:-moz-placeholder {
 	}
 	.b-input-search .b-clear-input{
 		top: 4px;
+	}
+	.b-search-result-content .b-catalog-menu{
+		margin-bottom: 24px;
 	}
 }
 
@@ -1016,6 +1019,7 @@ input:-moz-placeholder {
 	-ms-transform: translateY(0);
 	-o-transform: translateY(0);
 	transform: translateY(0);
+	overflow: auto;
 }
 .menu-open .b-menu-icon:before{
 	content: '\e903';
@@ -1044,9 +1048,10 @@ input:-moz-placeholder {
 				}
 					.b-menu-section ul li a{
 	    				display: inline-block;
-	    				margin-bottom: 24px;
+	    				margin-bottom: 30px;
 	    				font-size: 18px;
-	    				line-height: 24px;
+	    				line-height: 18px;
+	    				position: relative;
 					}
 					.b-menu-section ul li:last-child a{
 						margin-bottom: 0;
@@ -1198,6 +1203,10 @@ input:-moz-placeholder {
 }
 .soc-facebook:before{
 	content: '\e90b';
+	font-size: 24px;
+}
+.soc-ok:before{
+	content: '\e90c';
 	font-size: 24px;
 }
 .soc-instagram:before{
@@ -1986,7 +1995,8 @@ input:-moz-placeholder {
 								line-height: 24px;
 								position: relative;
 							}
-							.b-footer-menu-column a:before{
+							.b-footer-menu-column a:before,
+							.b-menu-section a:before{
 								position: absolute;
 								height: 1px;
 								content: '';
@@ -1998,7 +2008,12 @@ input:-moz-placeholder {
 								transition: width .1s ease-out;
 								background-color: #FFF;
 							}
-							.b-footer-menu-column a:hover:before{
+							.b-menu-section a:before{
+								background-color: #211F1F;
+								bottom: 0;
+							}
+							.b-footer-menu-column a:hover:before,
+							.b-menu-section a:hover:before{
 								width: 100%;
 							}
 		.b-footer-bottom{
@@ -2092,7 +2107,7 @@ input:-moz-placeholder {
 		width: calc((100vw - 32px)/3 - 27px);
 	}
 }
-@media screen and (max-width: 767px){
+@media screen and (max-width: 768px){
 	.b-footer{
 		margin-top: 60px;
 		padding-top: 44px;
@@ -2153,4 +2168,25 @@ input:-moz-placeholder {
 		}
 }
 /******************   footer  *******************/
+
+/******************   404  *******************/
+
+.b-404{
+
+}
+	.b-404-text{
+		font-size: 18px;
+		line-height: 26px;
+		margin-top: 40px;
+	}
+
+@media screen and (max-width: 768px){
+	.b-404-text{
+		font-size: 14px;
+		line-height: 20px;
+		margin-top: 28px;
+	}
+}
+
+/******************   404  *******************/
 
