@@ -34,7 +34,11 @@ $version = 2;
 			</div>
 			<div class="b-cart-inner-list">
 				<form action="#">
-					<div class="b-cart-item">
+					<?
+					$arItem["MAX_QUANTITY"] = 5;
+					$arItem["QUANTITY"] = 2;
+					?>
+					<div class="b-cart-item" data-quantity="<?=$arItem["MAX_QUANTITY"]?>">
 						<div class="b-cart-item-img" style="background-image: url(<?=SITE_TEMPLATE_PATH?>/i/cart-1.jpg);"></div>
 						<div class="b-cart-item-info">
 							<div class="b-cart-item-name">Водолазка тонкой вязки</div>
@@ -44,16 +48,18 @@ $version = 2;
 							<div class="b-cart-item-count">
 								<a href="#" class="b-cart-item-minus icon-minus"></a>
 								<div class="b-cart-item-input">
-									<input type="text" name="item-1-count" class="input-count" data-quantity="100" value="2">
+									<input type="text" name="item-1-count" class="input-count" value="<?=$arItem["QUANTITY"]?>" oninput="this.value = this.value.replace(/\D/g, '')">
 									<input type="hidden" name="item-1-price" value="5200">
 								</div>
 								<a href="#" class="b-cart-item-plus icon-plus"></a>
 							</div>
-							<?$arItem["QUANTITY"] = 2;?>
 							<div class="b-cart-item-select icon-arrow-down">
-								<select name="basket-count" class="b-basket-item-count">
+								<select name="basket-count" class="select-count">
+									<option value="">0 шт.</option>
 									<? for( $i = 1; $i <= 20; $i++ ): ?>
-										<option value="<?=$i?>" <? if($arItem["QUANTITY"] == $i) echo "selected";?>><?=$i?> шт.</option>
+										<option value="<?=$i?>" <? if($arItem["QUANTITY"] == $i) echo "selected";?>
+										<? if($arItem["MAX_QUANTITY"] < $i) echo " disabled"; ?>
+										><?=$i?> шт.</option>
 									<? endfor; ?>
 								</select>
 							</div>
@@ -65,7 +71,11 @@ $version = 2;
 							</div>
 						</div>
 					</div>
-					<div class="b-cart-item">
+					<?
+					$arItem["MAX_QUANTITY"] = 100;
+					$arItem["QUANTITY"] = 1;
+					?>
+					<div class="b-cart-item" data-quantity="<?=$arItem["MAX_QUANTITY"]?>">
 						<div class="b-cart-item-img" style="background-image: url(<?=SITE_TEMPLATE_PATH?>/i/cart-2.jpg);"></div>
 						<div class="b-cart-item-info">
 							<div class="b-cart-item-name">Юбка миди из твита</div>
@@ -75,16 +85,18 @@ $version = 2;
 							<div class="b-cart-item-count">
 								<a href="#" class="b-cart-item-minus icon-minus"></a>
 								<div class="b-cart-item-input">
-									<input type="text" name="item-1-count" class="input-count" data-quantity="100" value="2">
-									<input type="hidden" name="item-1-price" value="5200">
+									<input type="text" name="item-1-count" class="input-count" value="<?=$arItem["QUANTITY"]?>" oninput="this.value = this.value.replace(/\D/g, '')">
+									<input type="hidden" name="item-1-price" value="7980">
 								</div>
 								<a href="#" class="b-cart-item-plus icon-plus"></a>
 							</div>
-							<?$arItem["QUANTITY"] = 2;?>
 							<div class="b-cart-item-select icon-arrow-down">
-								<select name="basket-count" class="b-basket-item-count">
+								<select name="basket-count" class="select-count">
+									<option value="">0 шт.</option>
 									<? for( $i = 1; $i <= 20; $i++ ): ?>
-										<option value="<?=$i?>" <? if($arItem["QUANTITY"] == $i) echo "selected";?>><?=$i?> шт.</option>
+										<option value="<?=$i?>" <? if($arItem["QUANTITY"] == $i) echo "selected";?>
+										<? if($arItem["MAX_QUANTITY"] < $i) echo " disabled"; ?>
+										><?=$i?> шт.</option>
 									<? endfor; ?>
 								</select>
 							</div>
@@ -95,7 +107,11 @@ $version = 2;
 							</div>
 						</div>
 					</div>
-					<div class="b-cart-item">
+					<?
+					$arItem["MAX_QUANTITY"] = 10;
+					$arItem["QUANTITY"] = 2;
+					?>
+					<div class="b-cart-item" data-quantity="<?=$arItem["MAX_QUANTITY"]?>">
 						<div class="b-cart-item-img" style="background-image: url(<?=SITE_TEMPLATE_PATH?>/i/cart-3.jpg);"></div>
 						<div class="b-cart-item-info">
 							<div class="b-cart-item-name">Туфли с открытой пяткой</div>
@@ -105,16 +121,18 @@ $version = 2;
 							<div class="b-cart-item-count">
 								<a href="#" class="b-cart-item-minus icon-minus"></a>
 								<div class="b-cart-item-input">
-									<input type="text" name="item-1-count" class="input-count" data-quantity="100" value="2">
-									<input type="hidden" name="item-1-price" value="5200">
+									<input type="text" name="item-1-count" class="input-count" value="<?=$arItem["QUANTITY"]?>" oninput="this.value = this.value.replace(/\D/g, '')">
+									<input type="hidden" name="item-1-price" value="7980">
 								</div>
 								<a href="#" class="b-cart-item-plus icon-plus"></a>
 							</div>
-							<?$arItem["QUANTITY"] = 2;?>
 							<div class="b-cart-item-select icon-arrow-down">
-								<select name="basket-count" class="b-basket-item-count">
+								<select name="basket-count" class="select-count">
+									<option value="">0 шт.</option>
 									<? for( $i = 1; $i <= 20; $i++ ): ?>
-										<option value="<?=$i?>" <? if($arItem["QUANTITY"] == $i) echo "selected";?>><?=$i?> шт.</option>
+										<option value="<?=$i?>" <? if($arItem["QUANTITY"] == $i) echo "selected";?>
+										<? if($arItem["MAX_QUANTITY"] < $i) echo " disabled"; ?>
+										><?=$i?> шт.</option>
 									<? endfor; ?>
 								</select>
 							</div>
@@ -125,7 +143,11 @@ $version = 2;
 							</div>
 						</div>
 					</div>
-					<div class="b-cart-item">
+					<?
+					$arItem["MAX_QUANTITY"] = 20;
+					$arItem["QUANTITY"] = 3;
+					?>
+					<div class="b-cart-item" data-quantity="<?=$arItem["MAX_QUANTITY"]?>">
 						<div class="b-cart-item-img" style="background-image: url(<?=SITE_TEMPLATE_PATH?>/i/cart-4.jpg);"></div>
 						<div class="b-cart-item-info">
 							<div class="b-cart-item-name">Сумка кожаная с длинным ремнем</div>
@@ -135,16 +157,18 @@ $version = 2;
 							<div class="b-cart-item-count">
 								<a href="#" class="b-cart-item-minus icon-minus"></a>
 								<div class="b-cart-item-input">
-									<input type="text" name="item-1-count" class="input-count" data-quantity="100" value="2">
-									<input type="hidden" name="item-1-price" value="5200">
+									<input type="text" name="item-1-count" class="input-count" value="<?=$arItem["QUANTITY"]?>" oninput="this.value = this.value.replace(/\D/g, '')">
+									<input type="hidden" name="item-1-price" value="13200">
 								</div>
 								<a href="#" class="b-cart-item-plus icon-plus"></a>
 							</div>
-							<?$arItem["QUANTITY"] = 2;?>
 							<div class="b-cart-item-select icon-arrow-down">
-								<select name="basket-count" class="b-basket-item-count">
+								<select name="basket-count" class="select-count">
+									<option value="">0 шт.</option>
 									<? for( $i = 1; $i <= 20; $i++ ): ?>
-										<option value="<?=$i?>" <? if($arItem["QUANTITY"] == $i) echo "selected";?>><?=$i?> шт.</option>
+										<option value="<?=$i?>" <? if($arItem["QUANTITY"] == $i) echo "selected";?>
+										<? if($arItem["MAX_QUANTITY"] < $i) echo " disabled"; ?>
+										><?=$i?> шт.</option>
 									<? endfor; ?>
 								</select>
 							</div>

@@ -480,7 +480,7 @@ input:-moz-placeholder {
 	.b-cart-item-select{
 		display: block;
 		position: relative;
-		width: 64px;
+		width: 74px;
 	}
 	.icon-arrow-down:before{
 		content: '\e90f';
@@ -492,6 +492,9 @@ input:-moz-placeholder {
 		top: 8px;
 		right: 0;
 		left: auto;
+		-webkit-transform: none;
+		-ms-transform: none;
+		-o-transform: none;
 		transform: none;
 	}
 		.b-cart-item-select select{
@@ -573,6 +576,9 @@ input:-moz-placeholder {
 	}
 	.b-cart-close:before{
 		font-size: 20px;
+	}
+	.b-cart-item-select{
+		width: 64px;
 	}
 }
 @media screen and (max-width: 500px){

@@ -1,10 +1,12 @@
 $(document).ready(function(){	
 
-    var myHeight;
-    var isDesktop = false;
-    var isTablet = false;
-    var isMobile = false;
-    var heightOrig = 0;
+    var myHeight = 0,
+        myWidth = 0,
+        isDesktop = false,
+        isTablet = false,
+        isMobile = false,
+        countQueue = {},
+        heightOrig = 0;
 
     function resize(){
        if( typeof( window.innerWidth ) == 'number' ) {
@@ -332,12 +334,12 @@ $(document).ready(function(){
         $('html').removeClass('cart-open');
     });
 
-    var maxBasketCount = 999;
+    var maxBasketCount = 20;
 
     $('.b-cart-item-plus').on('click',function(){
         var $input = $(this).parents('.b-cart-item-count').find('.input-count');
 
-        if ($input.attr('data-quantity') != 0) {
+        if ($input.parents(".b-cart-item-info").attr('data-quantity') != 0) {
             var count = parseInt($input.val()) + 1;
             count = (count > maxBasketCount || isNaN(count) === true) ? maxBasketCount : count;
             $input.val(count).change();
@@ -355,25 +357,32 @@ $(document).ready(function(){
         return false;
     });
 
-    $(document).on('change', '.input-count', function(){
-        
-        if($(this).val()*1 > $(this).attr('data-quantity')*1){
-            $(this).val(Number($(this).attr('data-quantity')));
+    $(document).on('change', '.input-count, .select-count', function(){
+        changeQuantity($(this).parents(".b-cart-item"), $(this).val());
+    });
+
+    function changeQuantity($item, count) {
+        var $input = $item.find(".input-count");
+        var $select = $item.find(".select-count");
+
+        if(count > $item.attr('data-quantity')*1){
+            $input.val(Number($item.attr('data-quantity')));
+            $select.val($item.attr('data-quantity'));
+        }else{
+            $input.val(count);
+            $select.val(count);
         }
 
-        if ($(this).val()*1 == 0){
-            var item = $(this).parents('.b-cart-item');
-            item.animate({
+        if (count == 0){
+            $item.animate({
                 height : 'hide',
                 margin : 'hide',
                 opacity : 'hide'
             }, 300, 'swing', function(){
-                item.remove();
+                $item.remove();
             });
         }
-
-    });
-
+    }
 
 /***************** cart *************************/
 
@@ -430,7 +439,6 @@ $(document).ready(function(){
             'opacity' : '1'
         });
     });
-
 
 /***************** detail options hover *************************/
 
