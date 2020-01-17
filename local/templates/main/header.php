@@ -1,5 +1,8 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
-$version = "1"; ?>
+
+$version = 2; 
+
+?>
 
 <!DOCTYPE html>
 <html>
@@ -123,7 +126,7 @@ $version = "1"; ?>
 				<div class="b-header-cont">
 					<div class="b-header-block b-header-block-left">
 						<a href="#" class="b-menu-icon icon"></a>
-						<a href="index.php" class="b-logo"></a>
+						<a href="/" class="b-logo"></a>
 					</div>
 					<div class="b-header-block b-header-block-right">
 						<a href="#" class="b-search-icon icon"></a>
@@ -159,7 +162,7 @@ $version = "1"; ?>
 				{{/if}}
 			</script>
 			<div class="b-search-content">
-				<form method="GET" action="search.php" class="b-search-form" id="b-search-form">
+				<form method="GET" action="/send/search.php" class="b-search-form" id="b-search-form">
 					<div class="b-input-search">
 						<button class="b-search-icon icon"></button>
 						<input type="text" name="q" class="input-search" placeholder="Поиск по сайту">
@@ -185,67 +188,98 @@ $version = "1"; ?>
 		<div class="b-menu">
 			<div class="b-block b-menu-desktop clearfix">
 				<div class="b-menu-section">
-					<a href="#" class="main-item">Каталог</a>
-					<ul>
-						<li><a href="#">Новогодняя коллекция</a></li>
-						<li><a href="#">Новогодняя коллекция</a></li>
-						<li><a href="#">Новогодняя коллекция</a></li>
-						<li><a href="#">Новогодняя коллекция</a></li>
-						<li><a href="#">Новогодняя коллекция</a></li>
-						<li><a href="#">Новогодняя коллекция</a></li>
-					</ul>
+					<span class="main-item">Каталог</span>
+					<?$APPLICATION->IncludeComponent("bitrix:catalog.section.list", "sections-menu", Array(
+	"VIEW_MODE" => "TEXT",	// Вид списка подразделов
+		"SHOW_PARENT_NAME" => "Y",	// Показывать название раздела
+		"IBLOCK_TYPE" => "content",	// Тип инфоблока
+		"IBLOCK_ID" => "1",	// Инфоблок
+		"SECTION_ID" => "",	// ID раздела
+		"SECTION_CODE" => "",	// Код раздела
+		"SECTION_URL" => "",	// URL, ведущий на страницу с содержимым раздела
+		"COUNT_ELEMENTS" => "Y",	// Показывать количество элементов в разделе
+		"TOP_DEPTH" => "2",	// Максимальная отображаемая глубина разделов
+		"SECTION_FIELDS" => "",	// Поля разделов
+		"SECTION_USER_FIELDS" => "",	// Свойства разделов
+		"ADD_SECTIONS_CHAIN" => "Y",	// Включать раздел в цепочку навигации
+		"CACHE_TYPE" => "A",	// Тип кеширования
+		"CACHE_TIME" => "36000000",	// Время кеширования (сек.)
+		"CACHE_NOTES" => "",
+		"CACHE_GROUPS" => "Y",	// Учитывать права доступа
+	),
+	false
+);?>
 				</div>
 				<div class="b-menu-section">
-					<a href="#" class="main-item">Справка</a>
-					<ul>
-						<li><a href="#">О компании</a></li>
-						<li><a href="#">Политика конфиденциальности</a></li>
-						<li><a href="#">О компании</a></li>
-						<li><a href="#">Политика конфиденциальности</a></li>
-					</ul>
+					<span class="main-item">Справка</span>
+					<?$APPLICATION->IncludeComponent("bitrix:menu", "footer-menu", Array(
+	"ROOT_MENU_TYPE" => "reference",	// Тип меню для первого уровня
+		"MENU_CACHE_TYPE" => "N",	// Тип кеширования
+		"MENU_CACHE_TIME" => "3600",	// Время кеширования (сек.)
+		"MENU_CACHE_USE_GROUPS" => "N",	// Учитывать права доступа
+		"MENU_CACHE_GET_VARS" => array(	// Значимые переменные запроса
+			0 => "",
+		),
+		"MAX_LEVEL" => "1",	// Уровень вложенности меню
+		"CHILD_MENU_TYPE" => "",	// Тип меню для остальных уровней
+		"USE_EXT" => "N",	// Подключать файлы с именами вида .тип_меню.menu_ext.php
+		"DELAY" => "N",	// Откладывать выполнение шаблона меню
+		"ALLOW_MULTI_SELECT" => "N",	// Разрешить несколько активных пунктов одновременно
+	),
+	false
+);?>
 				</div>
 				<div class="b-menu-section">
-					<a href="#" class="main-item">Будьте с нами</a>
-					<ul>
-						<li><a href="#">Вконтакте</a></li>
-						<li><a href="#">Вконтакте</a></li>
-						<li><a href="#">Вконтакте</a></li>
-					</ul>
+					<span class="main-item">Будьте с нами</span>
+					<?=includeArea("social");?>
 				</div>
 			</div>
 			<div class="b-menu-mobile">
 				<ul class="b-menu-mobile-list">
 					<li>
 						<a href="#">Каталог</a>
-						<ul class="b-menu-sub">
-							<li><a href="#">Новогодняя коллекция</a></li>
-							<li><a href="#">Новогодняя коллекция</a></li>
-							<li><a href="#">Новогодняя коллекция</a></li>
-							<li><a href="#">Новогодняя коллекция</a></li>
-							<li><a href="#">Новогодняя коллекция</a></li>
-							<li><a href="#">Новогодняя коллекция</a></li>
-							<li><a href="#">Новогодняя коллекция</a></li>
-							<li><a href="#">Новогодняя коллекция</a></li>
-							<li><a href="#">Новогодняя коллекция</a></li>
-							<li><a href="#">Новогодняя коллекция</a></li>
-							<li><a href="#">Новогодняя коллекция</a></li>
-							<li><a href="#">Новогодняя коллекция</a></li>
-						</ul>
+						<?$APPLICATION->IncludeComponent("bitrix:catalog.section.list", "sections-menu", Array(
+	"VIEW_MODE" => "TEXT",	// Вид списка подразделов
+		"SHOW_PARENT_NAME" => "Y",	// Показывать название раздела
+		"IBLOCK_TYPE" => "content",	// Тип инфоблока
+		"IBLOCK_ID" => "1",	// Инфоблок
+		"SECTION_ID" => "",	// ID раздела
+		"SECTION_CODE" => "",	// Код раздела
+		"SECTION_URL" => "",	// URL, ведущий на страницу с содержимым раздела
+		"COUNT_ELEMENTS" => "Y",	// Показывать количество элементов в разделе
+		"TOP_DEPTH" => "2",	// Максимальная отображаемая глубина разделов
+		"SECTION_FIELDS" => "",	// Поля разделов
+		"SECTION_USER_FIELDS" => "",	// Свойства разделов
+		"ADD_SECTIONS_CHAIN" => "Y",	// Включать раздел в цепочку навигации
+		"CACHE_TYPE" => "A",	// Тип кеширования
+		"CACHE_TIME" => "36000000",	// Время кеширования (сек.)
+		"CACHE_NOTES" => "",
+		"CACHE_GROUPS" => "Y",	// Учитывать права доступа
+		"IS_MOBILE" => "Y"
+	),
+	false
+);?>
 						<div class="icon b-arrow-right"></div>
 					</li>
-					<li><a href="#">О компании</a></li>
-					<li><a href="#">Условия доставки</a></li>
-					<li><a href="#">Условия обмена и возврата</a></li>
-					<li><a href="#">Информация об оплате</a></li>
-					<li><a href="#">Контакты</a></li>
-					<li><a href="#">Политика конфиденциальности</a></li>
+					<?$APPLICATION->IncludeComponent("bitrix:menu", "footer-menu", Array(
+	"ROOT_MENU_TYPE" => "reference",	// Тип меню для первого уровня
+		"MENU_CACHE_TYPE" => "N",	// Тип кеширования
+		"MENU_CACHE_TIME" => "3600",	// Время кеширования (сек.)
+		"MENU_CACHE_USE_GROUPS" => "N",	// Учитывать права доступа
+		"MENU_CACHE_GET_VARS" => array(	// Значимые переменные запроса
+			0 => "",
+		),
+		"MAX_LEVEL" => "1",	// Уровень вложенности меню
+		"CHILD_MENU_TYPE" => "",	// Тип меню для остальных уровней
+		"USE_EXT" => "N",	// Подключать файлы с именами вида .тип_меню.menu_ext.php
+		"DELAY" => "N",	// Откладывать выполнение шаблона меню
+		"ALLOW_MULTI_SELECT" => "N",	// Разрешить несколько активных пунктов одновременно
+		"NO_WRAP" => "Y"
+	),
+	false
+);?>
 				</ul>
-				<ul class="b-social clearfix">
-					<li><a href="vk.com" class="icon soc-vk">Вконтакте</a></li>
-					<li><a href="facebook.com" class="icon soc-facebook">Facebook</a></li>
-					<li><a href="instagram.com" class="icon soc-instagram">Instagram</a></li>
-					<li><a href="youtube.com" class="icon soc-youtube">Youtube</a></li>
-				</ul>
+				<?=includeArea("social-icons");?>
 				<div class="b-menu-mobile-list slide-cont"></div>
 			</div>
 		</div>

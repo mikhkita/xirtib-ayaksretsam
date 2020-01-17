@@ -8,42 +8,55 @@
 				</div>
 				<div class="b-footer-menu-column">
 					<h3>Справка</h3>
-					<ul>
-						<li><a href="#">О компании</a></li>
-						<li><a href="#">Условия доставки</a></li>
-						<li><a href="#">Условия обмена и возврата</a></li>
-						<li><a href="#">Информация об оплате</a></li>
-						<li><a href="#">Контакты</a></li>
-					</ul>
+					<?$APPLICATION->IncludeComponent("bitrix:menu", "footer-menu", Array(
+	"ROOT_MENU_TYPE" => "reference",	// Тип меню для первого уровня
+		"MENU_CACHE_TYPE" => "N",	// Тип кеширования
+		"MENU_CACHE_TIME" => "3600",	// Время кеширования (сек.)
+		"MENU_CACHE_USE_GROUPS" => "N",	// Учитывать права доступа
+		"MENU_CACHE_GET_VARS" => array(	// Значимые переменные запроса
+			0 => "",
+		),
+		"MAX_LEVEL" => "1",	// Уровень вложенности меню
+		"CHILD_MENU_TYPE" => "",	// Тип меню для остальных уровней
+		"USE_EXT" => "N",	// Подключать файлы с именами вида .тип_меню.menu_ext.php
+		"DELAY" => "N",	// Откладывать выполнение шаблона меню
+		"ALLOW_MULTI_SELECT" => "N",	// Разрешить несколько активных пунктов одновременно
+		"IS_FOOTER" => "Y"
+	),
+	false
+);?>
 				</div>
 				<div class="b-footer-menu-column">
 					<h3>Каталог</h3>
-					<ul>
-						<li><a href="catalog.php">Вся одежда</a></li>
-						<li><a href="#">Распродажа</a></li>
-						<li><a href="#">LookBook</a></li>
-						<li><a href="#">Resort Collection 2020</a></li>
-					</ul>
+					<?$APPLICATION->IncludeComponent("bitrix:menu", "footer-menu", Array(
+						"ROOT_MENU_TYPE" => "catalog",	// Тип меню для первого уровня
+						"MENU_CACHE_TYPE" => "N",	// Тип кеширования
+						"MENU_CACHE_TIME" => "3600",	// Время кеширования (сек.)
+						"MENU_CACHE_USE_GROUPS" => "N",	// Учитывать права доступа
+						"MENU_CACHE_GET_VARS" => array(	// Значимые переменные запроса
+							0 => "",
+						),
+						"MAX_LEVEL" => "1",	// Уровень вложенности меню
+						"CHILD_MENU_TYPE" => "",	// Тип меню для остальных уровней
+						"USE_EXT" => "N",	// Подключать файлы с именами вида .тип_меню.menu_ext.php
+						"DELAY" => "N",	// Откладывать выполнение шаблона меню
+						"ALLOW_MULTI_SELECT" => "N",	// Разрешить несколько активных пунктов одновременно
+					),false);?>
 				</div>
 				<div class="b-footer-menu-column">
 					<h3>Будьте с нами</h3>
-					<ul>
-						<li><a href="vk.com">Вконтакте</a></li>
-						<li><a href="instagram.com">Instagram</a></li>
-						<li><a href="twitter.com">Twitter</a></li>
-						<li><a href="facebook.com">Facebook</a></li>
-						<li><a href="youtube.com">Youtube</a></li>
-					</ul>
+					<?=includeArea("social");?>
 				</div>
 			</div>
 			<div class="b-footer-bottom">
 				<div class="b-footer-bottom-item">© 2019 Мастерская. Все права защищены</div>
 				<div class="b-footer-bottom-item politics"><a href="/politics">Политика конфиденциальности</a></div>
-				<div class="b-footer-bottom-item redder"><a href="redder.pro"></a></div>
+				<div class="b-footer-bottom-item redder"><a href="http://redder.pro"></a></div>
 			</div>
 		</div>
 	</div>
 	<div class="b-menu-overlay" id="b-menu-overlay"></div>
+	<div class="b-cart-overlay" id="b-cart-overlay"></div>
 </div>
 <div style="display:none;">
 	<a href="#b-popup-error" class="b-error-link fancy" style="display:none;"></a>
@@ -57,7 +70,7 @@
 				<label for="tel">Введите Ваш номер телефона</label>
 				<input type="text" id="tel" name="phone" required/>
 				<label for="tel">Введите Ваш E-mail</label>
-				<input type="text" id="tel" name="email" required/>
+				<input type="text" id="email" name="email" required/>
 				<input type="hidden" name="subject" value="Заказ"/>
 				<input type="submit" style="display:none;">
 				<a href="#" class="b-btn b-blue-btn ajax">Заказать</a>
@@ -81,15 +94,18 @@
 <script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false&key=AIzaSyD6Sy5r7sWQAelSn-4mu2JtVptFkEQ03YI"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.sticky.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.touch.min.js"></script>
-<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.maskedinput.min.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/slick.min.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitCarousel.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitAnimate.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/slideout.min.js"></script>
-<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/mask.js"></script>
+<? if( !(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')!==false || strpos($_SERVER['HTTP_USER_AGENT'],'rv:11.0')!==false) ): ?>
+	<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/imask.min.js"></script>
+<? else: ?>
+	<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.maskedinput.min.js"></script>
+<? endif; ?>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/template7.min.js"></script>
-<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitSend.js"></script>
+<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitSend.js?<?=$version?>"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/main.js?<?=$version?>"></script>
 </body>
 </html>
