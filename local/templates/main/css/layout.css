@@ -604,7 +604,6 @@ input:-moz-placeholder {
 
 	.b-header{
 		position: relative;
-		z-index: 15;
 		padding: 70px 0;
 		display: flex;
 		flex-wrap: wrap;
@@ -831,6 +830,7 @@ input:-moz-placeholder {
 	.search-open .b-header,
 	.menu-open .b-header{
 		border-bottom: 1px solid #E6E6E6;
+		z-index: 100;
 	}
 	.search-open .b-search{
 		opacity: 1;
