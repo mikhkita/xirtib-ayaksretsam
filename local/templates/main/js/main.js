@@ -35,14 +35,44 @@ $(document).ready(function(){
 
         positionSearch();
 
-        //Пересчитать высоту мобильного меню
         if(isMobile){
+            //Пересчитать высоту меню
             $(".b-menu-mobile").css("height", String(window.innerHeight - $(".b-header").outerHeight()) + "px");
             $(".b-menu").css("max-height", "none");
+
+            $(".mobile-slider").each(function() {
+                if(!$(this).hasClass("slick-initialized")){
+                    $(this).slick({
+                        dots: true,
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        cssEase: 'ease', 
+                        speed: 500,
+                        arrows: false
+                    });  
+                }
+            });
+            $(".price-cont-desktop .b-cart-item-price-cont").each(function() {
+                var $this = $(this);
+                $this.parents(".b-cart-item").find(".price-cont-mobile").append($this);
+            });
         }else{
             $(".b-menu-mobile").css("height", "auto");
             $(".b-menu").css("max-height", String(window.innerHeight - $(".b-header").outerHeight()) + "px");
+
+            $(".mobile-slider").each(function() {//удалить слайдеры
+                if($(this).hasClass("slick-initialized")){
+                    $(this).slick('unslick');
+                }
+            });
+            $(".price-cont-mobile .b-cart-item-price-cont").each(function() {
+                var $this = $(this);
+                $this.parents(".b-cart-item").find(".price-cont-desktop").append($this);
+            });
         }
+
+
 
         // if(heightOrig && !isMobile) {
         //     var docHeight = (myHeight - 40 > heightOrig) ? heightOrig : myHeight - 40;
