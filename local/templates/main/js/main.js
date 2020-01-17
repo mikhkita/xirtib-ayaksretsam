@@ -358,7 +358,7 @@ $(document).ready(function(){
     });
 
     $(document).on('change', '.input-count, .select-count', function(){
-        changeQuantity($(this).parents(".b-cart-item"), $(this).val());
+        changeQuantity($(this).parents(".b-cart-item"), $(this).val()*1);
     });
 
     function changeQuantity($item, count) {
