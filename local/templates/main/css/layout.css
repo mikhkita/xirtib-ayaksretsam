@@ -442,7 +442,7 @@ input:-moz-placeholder {
 								color: #211F1F;
 								text-align: center;
 							}
-				.b-cart-item-price-cont{
+				.price-cont-desktop{
 					display: inline-block;
 					vertical-align: top;
 					float: right;
@@ -477,21 +477,137 @@ input:-moz-placeholder {
 			.b-cart .b-btn-brown{
 				max-width: 494px;
 			}
+	.b-cart-item-select{
+		display: none;
+	}
 @media screen and (max-width: 768px) {
 	.b-cart-inner{
 		padding: 44px 32px;
 	}
+	.b-cart-item-select{
+		display: block;
+		position: relative;
+		width: 74px;
+	}
+	.icon-arrow-down:before{
+		content: '\e90f';
+		font-size: 7px;
+		width: 12px;
+		height: 7px;
+		display: block;
+		position: absolute;
+		top: 8px;
+		right: 0;
+		left: auto;
+		-webkit-transform: none;
+		-ms-transform: none;
+		-o-transform: none;
+		transform: none;
+	}
+		.b-cart-item-select select{
+			width: 100%;
+			font-size: 18px;
+		    border: none;
+		    font-family: 'GothamPro-Regular';
+		    background-color: transparent;
+		    -webkit-appearance: none;
+		    -moz-appearance: none;
+		    appearance: none;
+		}
+	.b-cart-item-count,
+	.b-cart-item-color{
+		display: none;
+	}
+	.b-cart-item-info{
+		width: calc(100% - 128px);
+	}
+	.price-cont-mobile {
+
+	}
+		.b-cart-item-price {
+			display: inline-block;
+			vertical-align: top;
+			margin-right: 10px;
+		}
+		.b-cart-item-price-discount{
+			display: inline-block;
+			vertical-align: top;
+		}
+	.b-cart-item-name,
+	.b-cart-item-size,
+	.price-cont-mobile{
+		margin-bottom: 10px;
+	}
+
 }
 @media screen and (max-width: 600px){
 	.b-cart-item-img{
-		width: 70px;
-  		height: 104px;
-  		margin-right: 16px;
+		width: 80px;
+  		height: 120px;
+  		margin-right: 12px;
 	}
-	.b-cart-item-info{
-		width: calc(100% - 190px);
+	.b-cart-item-info {
+	    width: calc(100% - 100px);
+	}
+	.b-cart-item{
+		font-size: 16px;
+		margin-bottom: 24px;
+	}
+	.b-cart-item-select select{
+		font-size: 16px;
+	}
+	.b-cart-inner {
+	    padding: 24px 16px;
+	}
+	.b-cart-item-name,
+	.b-cart-item-size,
+	.price-cont-mobile{
+		margin-bottom: 6px;
+	}
+	.b-cart-sum-cont {
+	    font-size: 20px;
+	    line-height: 28px;
+	    margin-bottom: 32px;
+	}
+	.b-cart-inner-top{
+		margin-bottom: 32px;
+	}
+	.b-cart-header {
+	    font-size: 24px;
+	    line-height: 32px;
+	}
+	.b-cart-close{
+	    width: 20px;
+	    height: 20px;
+	    margin-right: 16px;
+	}
+	.b-cart-close:before{
+		font-size: 20px;
+	}
+	.b-cart-item-select{
+		width: 64px;
 	}
 }
+@media screen and (max-width: 500px){
+
+}
+/*@media screen and (max-width: 375px){
+	.b-cart-item-info{
+		width: calc(100% - 204px);
+		font-size: 16px;
+	}
+	.b-cart-item-price-cont{
+		font-size: 16px;
+	}
+	.b-cart-item-input input {
+	    padding: 4px 2px 2px 3px;
+	    width: 40px;
+	    font-size: 16px;
+	}
+	.b-cart-item-count{
+		white-space: nowrap;
+	}
+}*/
 
 
 /******************   cart slideout   *******************/
@@ -1591,6 +1707,9 @@ input:-moz-placeholder {
 				.b-lookbook-img{
 					height: calc((100vw - 32px)/1.42);
 				}
+	.slick-dots li{
+		margin-right: 24px;
+	}
 }
 @media screen and (max-width: 500px){
 	.b-catalog-item-img{
@@ -1715,6 +1834,14 @@ input:-moz-placeholder {
 	line-height: 24px;
 }
 
+@media screen and (max-width: 768px) {
+	.b-breadcrumbs li{
+		font-size: 16px;
+	}
+		.b-breadcrumbs a:before{
+			font-size: 16px;
+		}
+}
 
 /******************   catalog  *******************/
 
@@ -1722,7 +1849,7 @@ input:-moz-placeholder {
 
 
 .b-detail{
-	
+	padding-top: 3px;
 }
 	.b-detail-left{
 		width: calc(100% - 608px);
@@ -1955,6 +2082,46 @@ input:-moz-placeholder {
 	}
 	.b-detail-right{
 		width: 50%;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.b-detail-left{
+		width: 100vw;
+		margin-left: -16px;
+	}
+	.b-detail-right{
+		width: 100%;
+		padding-bottom: 0;
+	}
+	.b-detail-big-img{
+		margin-bottom: 0;
+	}
+		.b-detail-big-img-list .slick-dots{
+			bottom: 32px;
+			width: 100%;
+			text-align: center;
+		}
+	.b-detail-small-img-list{
+		display: none;
+	}
+		.b-detail-info-cont {
+		    width: 100%;
+		    margin-left: 0;
+		}
+	.b-slider-with-descr-cont {
+    	padding-top: 40px;
+	}
+	.b-detail-popup-links a{
+		line-height: 20px;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.b-detail h1,
+	.b-detail-price{
+		font-size: 24px;
+    	line-height: 32px;
 	}
 }
 

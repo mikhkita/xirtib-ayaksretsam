@@ -71,6 +71,7 @@ $this->setFrameMode(true);
 									<div class="b-detail-img-block"></div>
 								</div>
 							<? endif; ?>
+							<? array_push($arTmpColors, $offer["PROPERTIES"]["COLOR"]['VALUE']); ?>
 							<?if(!$isActive){ $isActive = true; }?>
 						<? endif; ?>
 					<? endforeach; ?>
@@ -120,7 +121,7 @@ $this->setFrameMode(true);
 								<? $border = (!empty($color['BORDER_CODE'])) ? 'border-color: #'.$color["BORDER_CODE"].';':''; ?>
 								<? $tickColor = (!empty($color['IS_LIGHT'])) ? 'black-tick' : ''; ?>
 								<div class="b-detail-option <?=$tickColor?> <?=$activeClass?> b-color-option" style="background-color: #<?=$color['CODE']?>;">
-									<input id="<?=$color['CODE']?>" type="radio" name="color" data-item="item-<?=$arColorToId[$color['CODE']]?>" data-option="<?=$color['NAME']?>" <?=$isChecked?>>
+									<input id="<?=$color['CODE']?>" type="radio" name="color" data-item="item-<?=$arResult['arColorToId'][$color['CODE']]?>" data-option="<?=$color['NAME']?>" <?=$isChecked?>>
 									<label for="<?=$color['CODE']?>" style="<?=$border?>"></label>
 								</div>
 							<? endforeach; ?>

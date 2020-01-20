@@ -12,13 +12,13 @@ $arResult["OFFERS"] = array_values($arResult["OFFERS"]);
 
 $arColors = array();
 $tmp = array();
-$arColorToId = array();
+$arResult['arColorToId'] = array();
 $arResult['arColorToArticle'] = array();
 
 foreach ($arResult["OFFERS"] as $key => $offer){
 	if (array_search($offer["PROPERTIES"]["COLOR"]['VALUE'], $arColors) === false){
 		array_push($arColors, $offer["PROPERTIES"]["COLOR"]['VALUE']);
-		$arColorToId[$offer["PROPERTIES"]["COLOR"]['VALUE']] = $offer['ID'];
+		$arResult['arColorToId'][$offer["PROPERTIES"]["COLOR"]['VALUE']] = $offer['ID'];
 		$arResult['arColorToArticle'][$offer["PROPERTIES"]["COLOR"]['VALUE']] = $offer["PROPERTIES"]["ARTICLE"]["VALUE"];
 	}
 }
