@@ -9,4 +9,74 @@ function includeArea($file){
 	);	
 }
 
+function vardump($str){
+	echo "<pre style='text-align:left;'>";
+	var_dump($str);
+	echo "</pre>";
+}
+
+function convertPrice($price){
+	return rtrim(rtrim(number_format($price, 1, '.', ' '),"0"),".");
+}
+
+function resizePhoto($photo){
+	$arPhoto = CFile::ResizeImageGet($photo, Array("width" => 490, "height" => 735), BX_RESIZE_IMAGE_EXACT, false, false, false, 100);
+	return $arPhoto['src'];
+}
+
+function getColors(){
+	$hldata = Bitrix\Highloadblock\HighloadBlockTable::getById(2)->fetch();
+	$hlentity = Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hldata);
+
+	$hlDataClass = $hldata['NAME'].'Table';
+
+	$result = $hlDataClass::getList(array(
+		'select' => array('UF_NAME', 'UF_XML_ID', 'UF_LINK', 'UF_DESCRIPTION'),
+	    'order' => array('UF_NAME' =>'ASC'),
+	));
+
+	$arColors = array();
+
+	while($res = $result->fetch()){
+		$tmp = array();
+		$tmp['NAME'] = $res['UF_NAME'];
+		$tmp['CODE'] = $res['UF_XML_ID'];
+		$tmp['IS_LIGHT'] = $res['UF_LINK'];
+		$tmp['BORDER_CODE'] = $res['UF_DESCRIPTION'];
+	    $arColors[] = $tmp;
+	}
+
+	return $arColors;
+}
+
+function addRecently($id){
+	if( !isset( $_SESSION["RECENTLY"] ) ){
+		$_SESSION["RECENTLY"] = array();
+	}
+
+	if( ($index = array_search($id, $_SESSION["RECENTLY"])) !== false ){
+		unset( $_SESSION["RECENTLY"][$index] );
+		$_SESSION["RECENTLY"] = array_values($_SESSION["RECENTLY"]);
+	}
+
+	array_unshift($_SESSION["RECENTLY"], $id);
+
+	$_SESSION["RECENTLY"] = array_slice($_SESSION["RECENTLY"], 0, 21);
+}
+
+function getRecently($without = NULL){
+	$out = array();
+
+	if( isset( $_SESSION["RECENTLY"] ) ){
+		$out = $_SESSION["RECENTLY"];
+
+		if( $without !== NULL && ($index = array_search($without, $out)) !== false ){
+			unset( $out[$index] );
+			$out = array_values($out);
+		}
+	}
+
+	return $out;
+}
+
 ?>

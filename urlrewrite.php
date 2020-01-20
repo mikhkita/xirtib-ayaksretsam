@@ -3,7 +3,7 @@ $arUrlRewrite=array (
   4 => 
   array (
     'CONDITION' => '#^/catalog/(.+)/(.+)/(\\\\?(.*))?#',
-    'RULE' => 'ELEMENT_CODE=$1&$2',
+    'RULE' => 'SECTION_CODE=$1&ELEMENT_CODE=$2&$3',
     'ID' => '',
     'PATH' => '/catalog/detail.php',
     'SORT' => 100,

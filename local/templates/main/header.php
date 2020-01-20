@@ -1,6 +1,9 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 $version = 2; 
+$curPage = $APPLICATION->GetCurPage();
+$urlArr = $GLOBALS["urlArr"] = explode("/", $curPage);
+$isDetail = $GLOBALS["isDetail"] = ($urlArr[1] == "catalog" && isset($urlArr[4]));
 
 ?>
 
@@ -35,7 +38,7 @@ $version = 2;
 			<div class="b-cart-inner-list">
 				<form action="#">
 					<div class="b-cart-item">
-						<div class="b-cart-item-img" style="background-image: url(i/cart-1.jpg);"></div>
+						<div class="b-cart-item-img" style="background-image: url(<?=SITE_TEMPLATE_PATH?>/i/cart-1.jpg);"></div>
 						<div class="b-cart-item-info">
 							<div class="b-cart-item-name">Водолазка тонкой вязки</div>
 							<div class="b-cart-item-color">Цвет: коричневый</div>
@@ -55,7 +58,7 @@ $version = 2;
 						</div>
 					</div>
 					<div class="b-cart-item">
-						<div class="b-cart-item-img" style="background-image: url(i/cart-2.jpg);"></div>
+						<div class="b-cart-item-img" style="background-image: url(<?=SITE_TEMPLATE_PATH?>/i/cart-2.jpg);"></div>
 						<div class="b-cart-item-info">
 							<div class="b-cart-item-name">Юбка миди из твита</div>
 							<div class="b-cart-item-color">Цвет: бежевый</div>
@@ -74,7 +77,7 @@ $version = 2;
 						</div>
 					</div>
 					<div class="b-cart-item">
-						<div class="b-cart-item-img" style="background-image: url(i/cart-3.jpg);"></div>
+						<div class="b-cart-item-img" style="background-image: url(<?=SITE_TEMPLATE_PATH?>/i/cart-3.jpg);"></div>
 						<div class="b-cart-item-info">
 							<div class="b-cart-item-name">Туфли с открытой пяткой</div>
 							<div class="b-cart-item-color">Цвет: коричневый</div>
@@ -94,7 +97,7 @@ $version = 2;
 						</div>
 					</div>
 					<div class="b-cart-item">
-						<div class="b-cart-item-img" style="background-image: url(i/cart-4.jpg);"></div>
+						<div class="b-cart-item-img" style="background-image: url(<?=SITE_TEMPLATE_PATH?>/i/cart-4.jpg);"></div>
 						<div class="b-cart-item-info">
 							<div class="b-cart-item-name">Сумка кожаная с длинным ремнем</div>
 							<div class="b-cart-item-color">Цвет: коричневый</div>
@@ -239,45 +242,45 @@ $version = 2;
 					<li>
 						<a href="#">Каталог</a>
 						<?$APPLICATION->IncludeComponent("bitrix:catalog.section.list", "sections-menu", Array(
-	"VIEW_MODE" => "TEXT",	// Вид списка подразделов
-		"SHOW_PARENT_NAME" => "Y",	// Показывать название раздела
-		"IBLOCK_TYPE" => "content",	// Тип инфоблока
-		"IBLOCK_ID" => "1",	// Инфоблок
-		"SECTION_ID" => "",	// ID раздела
-		"SECTION_CODE" => "",	// Код раздела
-		"SECTION_URL" => "",	// URL, ведущий на страницу с содержимым раздела
-		"COUNT_ELEMENTS" => "Y",	// Показывать количество элементов в разделе
-		"TOP_DEPTH" => "2",	// Максимальная отображаемая глубина разделов
-		"SECTION_FIELDS" => "",	// Поля разделов
-		"SECTION_USER_FIELDS" => "",	// Свойства разделов
-		"ADD_SECTIONS_CHAIN" => "Y",	// Включать раздел в цепочку навигации
-		"CACHE_TYPE" => "A",	// Тип кеширования
-		"CACHE_TIME" => "36000000",	// Время кеширования (сек.)
-		"CACHE_NOTES" => "",
-		"CACHE_GROUPS" => "Y",	// Учитывать права доступа
-		"IS_MOBILE" => "Y"
-	),
-	false
-);?>
+							"VIEW_MODE" => "TEXT",	// Вид списка подразделов
+								"SHOW_PARENT_NAME" => "Y",	// Показывать название раздела
+								"IBLOCK_TYPE" => "content",	// Тип инфоблока
+								"IBLOCK_ID" => "1",	// Инфоблок
+								"SECTION_ID" => "",	// ID раздела
+								"SECTION_CODE" => "",	// Код раздела
+								"SECTION_URL" => "",	// URL, ведущий на страницу с содержимым раздела
+								"COUNT_ELEMENTS" => "Y",	// Показывать количество элементов в разделе
+								"TOP_DEPTH" => "2",	// Максимальная отображаемая глубина разделов
+								"SECTION_FIELDS" => "",	// Поля разделов
+								"SECTION_USER_FIELDS" => "",	// Свойства разделов
+								"ADD_SECTIONS_CHAIN" => "Y",	// Включать раздел в цепочку навигации
+								"CACHE_TYPE" => "A",	// Тип кеширования
+								"CACHE_TIME" => "36000000",	// Время кеширования (сек.)
+								"CACHE_NOTES" => "",
+								"CACHE_GROUPS" => "Y",	// Учитывать права доступа
+								"IS_MOBILE" => "Y"
+							),
+							false
+						);?>
 						<div class="icon b-arrow-right"></div>
 					</li>
 					<?$APPLICATION->IncludeComponent("bitrix:menu", "footer-menu", Array(
-	"ROOT_MENU_TYPE" => "reference",	// Тип меню для первого уровня
-		"MENU_CACHE_TYPE" => "N",	// Тип кеширования
-		"MENU_CACHE_TIME" => "3600",	// Время кеширования (сек.)
-		"MENU_CACHE_USE_GROUPS" => "N",	// Учитывать права доступа
-		"MENU_CACHE_GET_VARS" => array(	// Значимые переменные запроса
-			0 => "",
-		),
-		"MAX_LEVEL" => "1",	// Уровень вложенности меню
-		"CHILD_MENU_TYPE" => "",	// Тип меню для остальных уровней
-		"USE_EXT" => "N",	// Подключать файлы с именами вида .тип_меню.menu_ext.php
-		"DELAY" => "N",	// Откладывать выполнение шаблона меню
-		"ALLOW_MULTI_SELECT" => "N",	// Разрешить несколько активных пунктов одновременно
-		"NO_WRAP" => "Y"
-	),
-	false
-);?>
+							"ROOT_MENU_TYPE" => "reference",	// Тип меню для первого уровня
+							"MENU_CACHE_TYPE" => "N",	// Тип кеширования
+							"MENU_CACHE_TIME" => "3600",	// Время кеширования (сек.)
+							"MENU_CACHE_USE_GROUPS" => "N",	// Учитывать права доступа
+							"MENU_CACHE_GET_VARS" => array(	// Значимые переменные запроса
+								0 => "",
+							),
+							"MAX_LEVEL" => "1",	// Уровень вложенности меню
+							"CHILD_MENU_TYPE" => "",	// Тип меню для остальных уровней
+							"USE_EXT" => "N",	// Подключать файлы с именами вида .тип_меню.menu_ext.php
+							"DELAY" => "N",	// Откладывать выполнение шаблона меню
+							"ALLOW_MULTI_SELECT" => "N",	// Разрешить несколько активных пунктов одновременно
+							"NO_WRAP" => "Y"
+						),
+						false
+					);?>
 				</ul>
 				<?=includeArea("social-icons");?>
 				<div class="b-menu-mobile-list slide-cont"></div>
