@@ -17,7 +17,7 @@ global $APPLICATION;
 $APPLICATION->RestartBuffer();
 CModule::IncludeModule("iblock");
 
-$result = array("status" => true);
+$result = array("status" => true, "items" => array());
 
 if(count($arResult["SEARCH"])){
 
@@ -51,11 +51,9 @@ if(count($arResult["SEARCH"])){
 		}
 		$result["items"] = $items;
 
-	}else{
-		$result["status"] = false;
-		$result["errorMsg"] = "Поиск не дал результата. Попробуйте изменить запрос.";
 	}
-}else{
+}
+if(empty($result["items"])){
 	$result["status"] = false;
 	$result["errorMsg"] = "Поиск не дал результата. Попробуйте изменить запрос.";
 }

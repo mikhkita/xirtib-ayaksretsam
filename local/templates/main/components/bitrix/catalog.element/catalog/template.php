@@ -20,7 +20,7 @@ $this->setFrameMode(true);
 <div class="b-detail">
 	<div class="b-block">
 		<div class="b-detail-left">
-			<div class="b-detail-big-img-list">
+			<div class="b-detail-big-img-list mobile-slider">
 				<? if ($arResult['PREVIEW_PICTURE']): ?>
 					<div class="b-detail-big-img" data-img="item-1" id="1">
 						<img src="<?=resizePhoto($arResult['PREVIEW_PICTURE'])?>">
