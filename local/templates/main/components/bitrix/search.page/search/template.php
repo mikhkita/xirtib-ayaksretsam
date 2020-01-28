@@ -20,7 +20,7 @@ CModule::IncludeModule("iblock");
 $result = array("status" => true);
 
 if(count($arResult["SEARCH"])){
-	
+
 	$IDs = array();
 	foreach($arResult["SEARCH"] as $arItem){
 		$IDs[] = $arItem["ITEM_ID"];
@@ -46,7 +46,7 @@ if(count($arResult["SEARCH"])){
 				"img" => CFile::GetPath($arFields["PREVIEW_PICTURE"]),
 				"img_hover" => CFile::GetPath($arFields["DETAIL_PICTURE"]),
 				"name" => $arFields["NAME"],
-				"price" => (int)$price["PRICE"]
+				"price" => convertPrice($price["PRICE"])
 			);
 		}
 		$result["items"] = $items;

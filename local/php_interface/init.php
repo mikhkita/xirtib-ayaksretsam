@@ -16,7 +16,7 @@ function vardump($str){
 }
 
 function convertPrice($price){
-	return rtrim(rtrim(number_format($price, 1, '.', ' '),"0"),".");
+	return (!empty($price)) ? rtrim(rtrim(number_format($price, 1, '.', ' '),"0"),".") : "";
 }
 
 function resizePhoto($photo){

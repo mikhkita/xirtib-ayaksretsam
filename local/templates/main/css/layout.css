@@ -477,7 +477,18 @@ input:-moz-placeholder {
 			.b-cart .b-btn-brown{
 				max-width: 494px;
 			}
+		.b-cart-inner-empty{
+			font-size: 16px;
+		}
+			.b-cart-inner-empty p{
+				display: inline-block;
+				margin-right: 6px;
+			}
 	.b-cart-item-select{
+		display: none;
+	}
+	.b-cart-inner-empty.hide,
+	.b-cart-inner-list.hide{
 		display: none;
 	}
 @media screen and (max-width: 768px) {
