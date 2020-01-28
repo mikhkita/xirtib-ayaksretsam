@@ -19,21 +19,32 @@ function convertPrice($price){
 	return rtrim(rtrim(number_format($price, 1, '.', ' '),"0"),".");
 }
 
-function resizePhoto($photo){
-	$arPhoto = CFile::ResizeImageGet($photo, Array("width" => 490, "height" => 735), BX_RESIZE_IMAGE_EXACT, false, false, false, 100);
+function resizePhoto($photo, $small = false){
+
+	if ($small) {
+		$arPhoto = CFile::ResizeImageGet($photo, Array("width" => 490, "height" => 735), BX_RESIZE_IMAGE_EXACT, false, false, false, 100);
+	} else {
+		$arPhoto = CFile::ResizeImageGet($photo, Array("width" => 892, "height" => 1338), BX_RESIZE_IMAGE_EXACT, false, false, false, 100);
+	}
+
 	return $arPhoto['src'];
 }
 
-function getColors(){
+function getColors($xml = false){
 	$hldata = Bitrix\Highloadblock\HighloadBlockTable::getById(2)->fetch();
 	$hlentity = Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hldata);
 
 	$hlDataClass = $hldata['NAME'].'Table';
-
-	$result = $hlDataClass::getList(array(
+	$dbArr = array(
 		'select' => array('UF_NAME', 'UF_XML_ID', 'UF_LINK', 'UF_DESCRIPTION'),
 	    'order' => array('UF_NAME' =>'ASC'),
-	));
+	);
+
+	if (!empty($xml)) {
+		$dbArr['filter'] = array('UF_XML_ID' => $xml);
+	}
+
+	$result = $hlDataClass::getList($dbArr);
 
 	$arColors = array();
 

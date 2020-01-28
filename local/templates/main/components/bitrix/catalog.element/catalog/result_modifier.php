@@ -1,148 +1,105 @@
 <? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 
-// var_dump($arResult["OFFERS"]);
-foreach ($arResult["OFFERS"] as $key => $offer) {
-	$quantity = intval($offer["PRODUCT"]["QUANTITY"]);
-	if( $quantity <= 0 ){
-		unset($arResult["OFFERS"][$key]);
-	}
+$currentItem = $arResult;
+
+if (!empty($arResult['PROPERTIES']['OTHER_COLORS']['VALUE'])) {
+	$arResult = findBaseProduct($arResult, array());
 }
 
-$arResult["OFFERS"] = array_values($arResult["OFFERS"]);
+$arItems = getOtherColorItems($arResult);
+$arBaseItem = array(0 => $arResult);
+$arResult = array();
+$arResult['ITEMS'] = array_merge($arItems, $arBaseItem);
 
-$arColors = array();
-$tmp = array();
-$arColorToId = array();
-$arResult['arColorToArticle'] = array();
-
-foreach ($arResult["OFFERS"] as $key => $offer){
-	if (array_search($offer["PROPERTIES"]["COLOR"]['VALUE'], $arColors) === false){
-		array_push($arColors, $offer["PROPERTIES"]["COLOR"]['VALUE']);
-		$arColorToId[$offer["PROPERTIES"]["COLOR"]['VALUE']] = $offer['ID'];
-		$arResult['arColorToArticle'][$offer["PROPERTIES"]["COLOR"]['VALUE']] = $offer["PROPERTIES"]["ARTICLE"]["VALUE"];
+foreach($arResult['ITEMS'] as $key => $arItems){
+	$arOffers = CCatalogSKU::getOffersList( $arItems['ID'], 1, array(), array(), array('CODE' => array('SIZE')));
+	foreach ($arOffers[$arItems['ID']] as $offerID => $offer) {
+		$arProduct = CCatalogProduct::GetByID($offerID);
+		$dbPrice = CPrice::GetList(array(),array("PRODUCT_ID" => $offerID, "CATALOG_GROUP_ID" => '1'));
+		if ($arPrice = $dbPrice->Fetch()){
+			$arOffers[$arItems['ID']][$offerID]['PRICES'] = $arPrice;
+		}	
+		$arOffers[$arItems['ID']][$offerID]['QUANTITY'] = $arProduct['QUANTITY'];
 	}
+
+	$arResult['ITEMS'][$key]['OFFERS'] = $arOffers[$arItems['ID']];
+	$arResult['ITEMS'][$key] = getNiceItem($arResult['ITEMS'][$key], $currentItem['ID']);
 }
 
+$arResult['CURRENT_ITEM'] = $currentItem;
 
-$allColors = getColors();
+function getOtherColorItems($arItem, $arOtherItems = array()){
+	$arFilter = array(
+		'IBLOCK_ID' => 1,
+		'ACTIVE' => 'Y',
+		'PROPERTY_OTHER_COLORS' => $arItem['ID']
+	);
 
-foreach($arColors as $key => $color){
-	foreach($allColors as $allColorItem){
-		if ($color == $allColorItem['CODE']){
-			$tmp[$key]['NAME'] = $allColorItem['NAME'];
-			$tmp[$key]['CODE'] = $allColorItem['CODE'];
-			$tmp[$key]['IS_LIGHT'] = $allColorItem['IS_LIGHT'];
-			$tmp[$key]['BORDER_CODE'] = $allColorItem['BORDER_CODE'];
-		}
+	$arSelect = Array('*');
+	$res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+	while($ob = $res->GetNextElement()){
+		$arFields = $ob->GetFields();
+		$arFields['PROPERTIES'] = $ob->GetProperties();
+		
+		$arOtherItems[] = $arFields;
+		$arOtherItems = getOtherColorItems($arFields, $arOtherItems);
 	}
+	return $arOtherItems;
 }
 
-$arResult['COLORS'] = array_values($tmp);
+function findBaseProduct($arItem, $baseProduct){
+	$arFilter = array(
+		'IBLOCK_ID' => 1,
+		'ACTIVE' => 'Y',
+		'ID' => $arItem['PROPERTIES']['OTHER_COLORS']['VALUE']
+	);
 
-if ($arResult["OFFERS"]) {
+	$arSelect = Array('*');
+	$res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+	while($ob = $res->GetNextElement()){
+		$arFields = $ob->GetFields();
+		$arFields['PROPERTIES'] = $ob->GetProperties();
 
-	$hasColors = false;
-	$hasSizes = false;
-
-	foreach ($arResult["OFFERS"] as $key => $offer) {
-		if (isset($offer['PROPERTIES']['COLOR']['VALUE'])) {
-			$hasColors = true;
-		}
-		if (isset($offer['PROPERTIES']['SIZE']['VALUE'])) {
-			$hasSizes = true;
+		$baseProduct = $arFields;
+		
+		if(!empty($arFields['PROPERTIES']['OTHER_COLORS']['VALUE'])){
+			$baseProduct = findBaseProduct($arFields, $baseProduct);
 		}
 	}
 
-	foreach ($arResult["OFFERS"] as $key => $offer){ 
-
-		$selected = ($key == 0) ? 'selected' : '';
-		$addColor = true;
-		$addSize = true;
-
-		if ($hasColors && $hasSizes) {
-
-			$color = $offer['PROPERTIES']['COLOR']['VALUE'];
-			$size = $offer['PROPERTIES']['SIZE']['VALUE'];
-
-			$jsonOffers[$color][$size]['NAME'] = $offer['NAME'];
-			$jsonOffers[$color][$size]['PRICE'] = $offer['PRICES']['PRICE']['VALUE'];
-			$jsonOffers[$color][$size]['DISCOUNT_PRICE'] = $offer['PRICES']['PRICE']['DISCOUNT_VALUE'];
-			$jsonOffers[$color][$size]['QUANTITY'] = $offer["PRODUCT"]["QUANTITY"];
-			$jsonOffers[$color][$size]['OFFER_ID'] = $offer['ID'];
-			$jsonOffers[$color][$size]['ITEM_PRICES'] = $offer["ITEM_PRICES"];
-			$jsonOffers[$color][$size]['ARTICLE'] = $offer['PROPERTIES']['ARTICLE']['VALUE'];
-
-		} else {
-
-			$option = ($hasColors) ? $offer['PROPERTIES']['COLOR']['VALUE'] : $offer['PROPERTIES']['SIZE']['VALUE'];
-
-			$jsonOffers[$option]['NAME'] = $offer['NAME'];
-			$jsonOffers[$option]['PRICE'] = $offer['PRICES']['PRICE']['VALUE'];
-			$jsonOffers[$option]['DISCOUNT_PRICE'] = $offer['PRICES']['PRICE']['DISCOUNT_VALUE'];
-			$jsonOffers[$option]['QUANTITY'] = $offer["PRODUCT"]["QUANTITY"];
-			$jsonOffers[$option]['OFFER_ID'] = $offer['ID'];
-			$jsonOffers[$option]['ITEM_PRICES'] = $offer["ITEM_PRICES"];
-			
-		}
-
-		// foreach ($tmpColorId as $value){
-		// 	if (intval($offer['PROPERTIES']['COLOR']['VALUE']) == intval($value)){
-		// 		$addColor = false;
-		// 	}
-		// }
-
-		// foreach ($tmpSizeId as $value){
-		// 	if (intval($offer['PROPERTIES']['SIZE']['VALUE']) == intval($value)){
-		// 		$addSize = false;
-		// 	}
-		// }
-
-		// if ($addColor && isset($offer['PROPERTIES']['COLOR']['VALUE'])){
-		// 	$tmpColorId[] = $offer['PROPERTIES']['COLOR']['VALUE'];
-		// 	$colorxml = $offer['PROPERTIES']['COLOR']['VALUE'];
-		// 	$arResult['COLORS'][$colorxml] = array();
-		// 	$arResult['COLORS'][$colorxml]['NAME'] = $offer['PROPERTIES']['COLOR']['VALUE'];
-		// 	$arResult['COLORS'][$colorxml]['SELECTED'] = $selected;
-		// }
-
-		// if ($addSize && isset($offer['PROPERTIES']['SIZE']['VALUE'])){
-		// 	$tmpSizeId[] = $offer['PROPERTIES']['SIZE']['VALUE'];
-		// 	$sizexml = $offer['PROPERTIES']['SIZE']['VALUE'];
-		// 	$arResult['SIZE'][$sizexml] = array();
-		// 	$arResult['SIZE'][$sizexml]['NAME'] = $offer['PROPERTIES']['SIZE']['VALUE'];
-		// 	$arResult['SIZE'][$sizexml]['SELECTED'] = $selected;
-		// }
-	}
-
-	$arResult['JSON_OFFERS'] = json_encode($jsonOffers);
+	return $baseProduct;
 }
 
-/**
- * @var CBitrixComponentTemplate $this
- * @var CatalogElementComponent $component
- */
+function getNiceItem($arItem, $currentItemID){
 
-// $component = $this->getComponent();
-// $arParams = $component->applyTemplateModifications();
+	$arNiceItem = array();
+	$arNiceItem['ID'] = intval($arItem['ID']);
+	$arNiceItem['NAME'] = $arItem['NAME'];
+	$arNiceItem['ARTICLE'] = $arItem['PROPERTIES']['ARTICLE']['VALUE'];
+	$arNiceItem['PREVIEW_TEXT'] = $arItem['PREVIEW_TEXT'];
+	$arNiceItem['DETAIL_TEXT'] = $arItem['DETAIL_TEXT'];
+	$arNiceItem['OFFERS'] = array();
+	foreach($arItem['OFFERS'] as $key => $offer){
+		$arNiceItem['OFFERS'][] = array(
+			'ID' => $offer['ID'],
+			'SIZE' => $offer['PROPERTIES']['SIZE']['VALUE'],
+			'QUANTITY' => $offer['QUANTITY'],
+			'PRICE' => convertPrice($offer['PRICES']['PRICE'])
+		);
+	}
+	$arColors = getColors($arItem['PROPERTIES']['COLOR']['VALUE']);
+	$arNiceItem['COLOR'] = $arColors[0];
+	if ($currentItemID == $arItem['ID']){
+		$arNiceItem['COLOR']['CURRENT'] = true;
+	}
+	$arNiceItem['PHOTOS'] = array();
+	foreach($arItem['PROPERTIES']['PHOTOS']['VALUE'] as $arPhoto){
+		$arNiceItem['PHOTOS'][] = array(
+			'ID' => $arPhoto,
+			'BIG_SIZE' => resizePhoto($arPhoto),
+			'SMALL_SIZE' => resizePhoto($arPhoto, true)
+		);
+	}
 
-// $units = array(
-// 	2 => "за 1 литр",
-// 	3 => "за 1 грамм",
-// 	4 => "за 1 килограмм",
-// 	5 => "за штуку",
-// 	6 => "за упаковку",
-// );
-
-// $arResult["MEASURE"] = $units[ $arResult["PRODUCT"]["MEASURE"] ];
-
-// if( isset($GLOBALS["BASKET_ITEMS"][ $arResult["ID"] ]) ){
-// 	$arResult["BASKET"] = $GLOBALS["BASKET_ITEMS"][ $arResult["ID"] ];
-// }
-
-// $arResult = $arResult + getRating($arResult["ID"]);
-
-// $rsStore = CCatalogStoreProduct::GetList(array(), array('PRODUCT_ID' =>$arResult["ID"], 'STORE_ID' => 1), false, false); 
-// $arResult["AMOUNT"] = array();
-// if ($arStore = $rsStore->Fetch()){
-// 	array_push($arResult["AMOUNT"], $arStore);
-// }
+	return $arNiceItem;
+}

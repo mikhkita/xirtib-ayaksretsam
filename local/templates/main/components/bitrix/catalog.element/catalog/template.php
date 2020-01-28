@@ -2,78 +2,159 @@
 
 global $APPLICATION;
 
-if ($arResult['JSON_OFFERS']):
+if ($arResult['ITEMS']):
 	?><script>
-		var offers = <?=$arResult['JSON_OFFERS']?>;
+		var offers = (<?=json_encode($arResult['ITEMS'])?>);
 	</script><?
 endif;
 
-$this->setFrameMode(true);
+
+// $this->setFrameMode(true);
 ?>
 
-<div id="detail_component">
+<!-- <div id="detail_component"> -->
 <? /*$frame = $this->createFrame("detail_component", false)->begin();*/ ?>
 
-<? $arTmpColors = array(); ?>
-<? $arSizes = array(); ?>
+<? 
+
+$arItems = $arResult['ITEMS'];
+$arResult = $arResult['CURRENT_ITEM'];
+$arColors = getColors(); 
+$currentColor = array();
+
+foreach ($arColors as $key => $color) {
+	
+	if (empty($color['BORDER_CODE'])) {
+		$arColors[$key]['BORDER_CODE'] = $color['BORDER_CODE'] = '#FFF';
+	}
+
+	if ($color['CODE'] == $arResult['PROPERTIES']["COLOR"]["VALUE"]) {
+		$arColors[$key]['CURRENT'] = true;
+		$currentColor['NAME'] = $color['NAME'];
+		$currentColor['BORDER_CODE'] = $color['BORDER_CODE'];
+	}
+}
+
+?>
+
 
 <div class="b-detail">
 	<div class="b-block">
+		<div class="b-detail-cont">
+			<div class="b-detail-left">
+				<div class="b-detail-big-img-list">
+					<? if ($arResult['PROPERTIES']['PHOTOS']['VALUE']): ?>
+						<? foreach($arResult['PROPERTIES']['PHOTOS']['VALUE'] as $photo): ?>
+							<div class="b-detail-big-img" data-img="item-<?=$photo?>" id="<?=$photo?>">
+								<img src="<?=resizePhoto($photo)?>">
+							</div>
+						<? endforeach; ?>
+					<? endif; ?>
+				</div>
+			</div>
+			<div class="b-detail-right stick">
+				<div class="b-detail-small-img-list">
+					<div class="b-detail-small-img-hover"></div>
+					<div class="b-detail-small-img-list-cont">
+						<? if ($arResult['PROPERTIES']['PHOTOS']['VALUE']): ?>
+							<? foreach($arResult['PROPERTIES']['PHOTOS']['VALUE'] as $key => $photo): ?>
+								<? $activeClass = ($key == 0) ? 'active' : '' ;?>
+								<div class="b-detail-small-img <?=$activeClass?>" data-img="item-<?=$photo?>" style="background-image: url('<?=resizePhoto($photo, true)?>');">
+									<div class="b-detail-img-block"></div>
+								</div>
+							<? endforeach; ?>
+						<? endif; ?>
+					</div>
+				</div>
+				<form action="#" class="b-detail-info-cont">
+					<div class="b-detail-right-top">
+						<?$APPLICATION->IncludeComponent("bitrix:breadcrumb", "main", Array(
+							"COMPONENT_TEMPLATE" => ".defaults",
+							"START_FROM" => "0",
+							"PATH" => "",
+							"SITE_ID" => "s1",
+						),false );?>
+						<h1><?$APPLICATION->ShowTitle()?></h1>
+					</div>
+					<div class="b-detail-price"><?=convertPrice($arResult["OFFERS"][0]['PRICES']['PRICE']['VALUE'])?> руб.</div>
+					<div class="b-detail-popup-links">
+						<a href="#" class="dashed">Обмеры</a>
+						<a href="#" class="dashed">Справочник по размерам</a>
+					</div>
+					<div class="b-detail-option-cont b-detail-size">
+						<div class="b-detail-label">Размер: <span class="option-text"><?=$arResult["OFFERS"][0]['PROPERTIES']['SIZE']['VALUE']?></span></div>
+						<div class="b-detail-option-list">
+							<div class="b-detail-option-hover"></div>
+							<div class="b-detail-option-list-cont">
+								<? foreach ($arResult["OFFERS"] as $key => $offer): ?>
+									<? $activeClass = ($key == 0) ? 'active' : ''; ?>
+									<? $isChecked = ($key == 0) ? 'checked' : ''; ?>
+									<div class="b-detail-option <?=$activeClass?>">
+										<input id="<?=$offer['PROPERTIES']['SIZE']['VALUE']?>" type="radio" name="size" data-option="<?=$offer['PROPERTIES']['SIZE']['VALUE']?>" <?=$isChecked?>>
+										<label for="<?=$offer['PROPERTIES']['SIZE']['VALUE']?>"><?=strtoupper($offer['PROPERTIES']['SIZE']['VALUE']);?></label>
+									</div>
+								<? endforeach; ?>
+							</div>
+						</div>
+					</div>
+					<div class="b-detail-option-cont b-detail-color">
+						<div class="b-detail-label">Цвет: <span class="option-text"><?=$currentColor['NAME']?></span></div>
+						<div class="b-detail-option-list">
+							<div class="b-detail-option-hover" style="border-color: <?=$currentColor['BORDER_CODE']?>;"></div>
+							<div class="b-detail-option-list-cont">
+								<? foreach ($arItems as $key => $item): ?>
+									<? $activeClass = ($item['COLOR']['CURRENT']) ? 'active' : ''; ?>
+									<? $isChecked = ($item['COLOR']['CURRENT']) ? 'checked' : ''; ?>
+									<? $tickColor = (!empty($item['COLOR']['IS_LIGHT'])) ? 'black-tick' : ''; ?>
+									<div class="b-detail-option <?=$tickColor?> <?=$activeClass?> b-color-option" style="background-color: #<?=$item['COLOR']['CODE']?>;">
+										<input id="<?=$item['COLOR']['CODE']?>" type="radio" name="color" data-item="<?=$key?>" data-option="<?=$item['COLOR']['NAME']?>" <?=$isChecked?>>
+										<label for="<?=$item['COLOR']['CODE']?>" style="border-color: #<?=$item['COLOR']['BORDER_CODE']?>"></label>
+									</div>
+								<? endforeach; ?>
+							</div>
+						</div>
+					</div>
+					<div class="b-article">Артикул: <span id="item-article"><?=$arResult['PROPERTIES']['ARTICLE']['VALUE']?></span></div>
+					<a href="#" class="b-btn b-btn-brown b-btn-cart">Добавить в корзину</a>
+					<div class="b-detail-info">
+						<div class="b-detail-payment">
+							<div class="b-detail-payment-text">Принимаем к оплате:</div>
+							<div class="b-detail-payment-options"></div>
+						</div>
+						<div class="b-detail-description">
+							<?=$arResult['PREVIEW_TEXT']?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script id="detail-template" type="text/x-handlebars-template">
+	<div class="b-detail-cont">
 		<div class="b-detail-left">
 			<div class="b-detail-big-img-list">
-				<? if ($arResult['PREVIEW_PICTURE']): ?>
-					<div class="b-detail-big-img" data-img="item-1" id="1">
-						<img src="<?=resizePhoto($arResult['PREVIEW_PICTURE'])?>">
-					</div>
-				<? endif; ?>
-				<? if ($arResult['DETAIL_PICTURE']): ?>
-					<div class="b-detail-big-img" data-img="item-2" id="2">
-						<img src="<?=resizePhoto($arResult['DETAIL_PICTURE'])?>">
-					</div>
-				<? endif; ?>
-				<? foreach ($arResult["OFFERS"] as $key => $offer): ?>
-					<? if (array_search($offer["PROPERTIES"]["COLOR"]['VALUE'], $arTmpColors) === false): ?>
-						<? if ($offer['DETAIL_PICTURE']): ?>
-							<div class="b-detail-big-img" data-img="item-<?=$offer['ID']?>" id="<?=$offer['ID']?>">
-								<img src="<?=resizePhoto($offer['DETAIL_PICTURE'])?>">
-							</div>
-						<? endif; ?>
-						<? array_push($arTmpColors, $offer["PROPERTIES"]["COLOR"]['VALUE']); ?>
-					<? endif; ?>
-				<? endforeach; ?>
-				<? $arTmpColors = array(); ?>
+				{{#if PHOTOS}}
+					{{#PHOTOS}}
+						<div class="b-detail-big-img" data-img="item-{{ID}}" id="{{ID}}">
+							<img src="{{BIG_SIZE}}">
+						</div>
+					{{/PHOTOS}}
+				{{/if}}
 			</div>
 		</div>
 		<div class="b-detail-right stick">
 			<div class="b-detail-small-img-list">
 				<div class="b-detail-small-img-hover"></div>
 				<div class="b-detail-small-img-list-cont">
-					<? $isActive = false; ?>
-					<? if ($arResult['PREVIEW_PICTURE']): ?>
-						<div class="b-detail-small-img active" data-img="item-1" style="background-image: url('<?=resizePhoto($arResult['PREVIEW_PICTURE'])?>');">
-							<div class="b-detail-img-block"></div>
-						</div>
-						<? $isActive = true; ?>
-					<? endif; ?>
-					<? if ($arResult['DETAIL_PICTURE']): ?>
-						<div class="b-detail-small-img <?if(!$isActive){ echo 'active'; }?>" data-img="item-2" style="background-image: url('<?=resizePhoto($arResult['DETAIL_PICTURE'])?>');">
-							<div class="b-detail-img-block"></div>
-						</div>
-						<?if(!$isActive){ $isActive = true; }?>
-					<? endif; ?>
-					<? foreach ($arResult["OFFERS"] as $key => $offer): ?>
-						<? if (array_search($offer["PROPERTIES"]["SIZE"]['VALUE'], $arSizes) === false): ?>
-							<? $arSizes[$offer["PROPERTIES"]["SIZE"]["VALUE_ENUM_ID"]] = $offer["PROPERTIES"]["SIZE"]["VALUE"]; ?>
-						<? endif; ?>
-						<? if (array_search($offer["PROPERTIES"]["COLOR"]['VALUE'], $arTmpColors) === false): ?> 
-							<? if ($offer['DETAIL_PICTURE']): ?>
-								<div class="b-detail-small-img <?if(!$isActive){ echo 'active'; }?>" data-img="item-<?=$offer['ID']?>" style="background-image: url('<?=resizePhoto($offer['DETAIL_PICTURE'])?>');">
-									<div class="b-detail-img-block"></div>
-								</div>
-							<? endif; ?>
-							<?if(!$isActive){ $isActive = true; }?>
-						<? endif; ?>
-					<? endforeach; ?>
+					{{#if PHOTOS}}
+						{{#PHOTOS}}
+							<div class="b-detail-small-img {{#if @first}}active{{/if}}" data-img="item-{{ID}}" style="background-image: url('{{SMALL_SIZE}}');">
+								<div class="b-detail-img-block"></div>
+							</div>
+						{{/PHOTOS}}
+					{{/if}}
 				</div>
 			</div>
 			<form action="#" class="b-detail-info-cont">
@@ -84,50 +165,45 @@ $this->setFrameMode(true);
 						"PATH" => "",
 						"SITE_ID" => "s1",
 					),false );?>
-					<h1><?$APPLICATION->ShowTitle()?></h1>
+					<h1>{{NAME}}</h1>
 				</div>
-				<div class="b-detail-price"><?=convertPrice($arResult["OFFERS"][0]['PRICES']['PRICE']['VALUE'])?> руб.</div>
+				<div class="b-detail-price">{{OFFERS.0.PRICE}} руб.</div>
 				<div class="b-detail-popup-links">
 					<a href="#" class="dashed">Обмеры</a>
 					<a href="#" class="dashed">Справочник по размерам</a>
 				</div>
 				<div class="b-detail-option-cont b-detail-size">
-					<? $arSizes = array_values($arSizes); ?>
-					<div class="b-detail-label">Размер: <span class="option-text"><?=$arSizes[0]?></span></div>
+					<div class="b-detail-label">Размер: <span class="option-text">{{OFFERS.0.SIZE}}</span></div>
 					<div class="b-detail-option-list">
 						<div class="b-detail-option-hover"></div>
 						<div class="b-detail-option-list-cont">
-							<? foreach ($arSizes as $key => $size): ?>
-								<? $activeClass = ($key == 0) ? 'active' : ''; ?>
-								<? $isChecked = ($key == 0) ? 'checked' : ''; ?>
-								<div class="b-detail-option <?=$activeClass?>">
-									<input id="<?=$size?>" type="radio" name="size" data-option="<?=$size?>" <?=$isChecked?>>
-									<label for="<?=$size?>"><?=strtoupper($size);?></label>
+							{{#OFFERS}}
+								<div class="b-detail-option {{#if @first}}active{{/if}}">
+									<input id="{{SIZE}}" type="radio" name="size" data-option="{{SIZE}}" {{#if @first}}checked{{/if}}>
+									<label for="{{SIZE}}">{{SIZE}}</label>
 								</div>
-							<? endforeach; ?>
+							{{/OFFERS}}
 						</div>
 					</div>
 				</div>
 				<div class="b-detail-option-cont b-detail-color">
-					<div class="b-detail-label">Цвет: <span class="option-text"><?=$arResult['COLORS'][0]['NAME']?></span></div>
+					<div class="b-detail-label">Цвет: {{COLOR.NAME}}</span></div>
 					<div class="b-detail-option-list">
-						<? $borderColor = (!empty($arResult['COLORS'][0]['IS_LIGHT'])) ? 'rgb(183, 150, 139)' : '#FFF'; ?>
-						<div class="b-detail-option-hover" style="border-color: <?=$borderColor?>;"></div>
+						<div class="b-detail-option-hover" style="border-color: <?=$currentColor['BORDER_CODE']?>;"></div>
 						<div class="b-detail-option-list-cont">
-							<? foreach ($arResult['COLORS'] as $key => $color): ?>
-								<? $activeClass = ($key == 0) ? 'active' : ''; ?>
-								<? $isChecked = ($key == 0) ? 'checked' : ''; ?>
-								<? $border = (!empty($color['BORDER_CODE'])) ? 'border-color: #'.$color["BORDER_CODE"].';':''; ?>
-								<? $tickColor = (!empty($color['IS_LIGHT'])) ? 'black-tick' : ''; ?>
-								<div class="b-detail-option <?=$tickColor?> <?=$activeClass?> b-color-option" style="background-color: #<?=$color['CODE']?>;">
-									<input id="<?=$color['CODE']?>" type="radio" name="color" data-item="item-<?=$arColorToId[$color['CODE']]?>" data-option="<?=$color['NAME']?>" <?=$isChecked?>>
-									<label for="<?=$color['CODE']?>" style="<?=$border?>"></label>
+							<? foreach ($arItems as $key => $item): ?>
+								<? $activeClass = ($item['COLOR']['CURRENT']) ? 'active' : ''; ?>
+								<? $isChecked = ($item['COLOR']['CURRENT']) ? 'checked' : ''; ?>
+								<? $tickColor = (!empty($item['COLOR']['IS_LIGHT'])) ? 'black-tick' : ''; ?>
+								<div class="b-detail-option <?=$tickColor?> <?=$activeClass?> b-color-option" style="background-color: #<?=$item['COLOR']['CODE']?>;">
+									<input id="<?=$item['COLOR']['CODE']?>" type="radio" name="color" data-item="<?=$key?>" data-option="<?=$item['COLOR']['NAME']?>" <?=$isChecked?>>
+									<label for="<?=$item['COLOR']['CODE']?>" style="border-color: #<?=$item['COLOR']['BORDER_CODE']?>"></label>
 								</div>
 							<? endforeach; ?>
 						</div>
 					</div>
 				</div>
-				<div class="b-article">Артикул: <span id="item-article"><?=$arResult['arColorToArticle'][$arResult['COLORS'][0]['CODE']]?></span></div>
+				<div class="b-article">Артикул: <span id="item-article">{{ARTICLE}}</span></div>
 				<a href="#" class="b-btn b-btn-brown b-btn-cart">Добавить в корзину</a>
 				<div class="b-detail-info">
 					<div class="b-detail-payment">
@@ -135,13 +211,13 @@ $this->setFrameMode(true);
 						<div class="b-detail-payment-options"></div>
 					</div>
 					<div class="b-detail-description">
-						<?=$arResult['PREVIEW_TEXT']?>
+						{{PREVIEW_TEXT}}
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</script>
 
 <? $GLOBALS['arrFilter']['ID'] = array(); ?>
 
@@ -360,4 +436,4 @@ $this->setFrameMode(true);
 <? endif; ?>
 
 <?/*$frame->end();*/?>
-</div>
+<!-- </div> -->

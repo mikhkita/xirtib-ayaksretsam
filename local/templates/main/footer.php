@@ -9,22 +9,22 @@
 				<div class="b-footer-menu-column">
 					<h3>Справка</h3>
 					<?$APPLICATION->IncludeComponent("bitrix:menu", "footer-menu", Array(
-	"ROOT_MENU_TYPE" => "reference",	// Тип меню для первого уровня
-		"MENU_CACHE_TYPE" => "N",	// Тип кеширования
-		"MENU_CACHE_TIME" => "3600",	// Время кеширования (сек.)
-		"MENU_CACHE_USE_GROUPS" => "N",	// Учитывать права доступа
-		"MENU_CACHE_GET_VARS" => array(	// Значимые переменные запроса
-			0 => "",
-		),
-		"MAX_LEVEL" => "1",	// Уровень вложенности меню
-		"CHILD_MENU_TYPE" => "",	// Тип меню для остальных уровней
-		"USE_EXT" => "N",	// Подключать файлы с именами вида .тип_меню.menu_ext.php
-		"DELAY" => "N",	// Откладывать выполнение шаблона меню
-		"ALLOW_MULTI_SELECT" => "N",	// Разрешить несколько активных пунктов одновременно
-		"IS_FOOTER" => "Y"
-	),
-	false
-);?>
+						"ROOT_MENU_TYPE" => "reference",	// Тип меню для первого уровня
+							"MENU_CACHE_TYPE" => "N",	// Тип кеширования
+							"MENU_CACHE_TIME" => "3600",	// Время кеширования (сек.)
+							"MENU_CACHE_USE_GROUPS" => "N",	// Учитывать права доступа
+							"MENU_CACHE_GET_VARS" => array(	// Значимые переменные запроса
+								0 => "",
+							),
+							"MAX_LEVEL" => "1",	// Уровень вложенности меню
+							"CHILD_MENU_TYPE" => "",	// Тип меню для остальных уровней
+							"USE_EXT" => "N",	// Подключать файлы с именами вида .тип_меню.menu_ext.php
+							"DELAY" => "N",	// Откладывать выполнение шаблона меню
+							"ALLOW_MULTI_SELECT" => "N",	// Разрешить несколько активных пунктов одновременно
+							"IS_FOOTER" => "Y"
+						),
+						false
+					);?>
 				</div>
 				<div class="b-footer-menu-column">
 					<h3>Каталог</h3>
@@ -95,6 +95,7 @@
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.sticky.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.touch.min.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/handlebars-v4.1.2.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/slick.min.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitCarousel.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitAnimate.js"></script>

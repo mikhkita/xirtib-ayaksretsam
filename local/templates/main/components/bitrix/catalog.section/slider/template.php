@@ -55,8 +55,10 @@ $this->setFrameMode(true); ?>
 
 							<a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="b-catalog-item">
 								<div class="b-catalog-item-img">
-									<img src="<?=resizePhoto($arItem['PREVIEW_PICTURE'])?>">
-									<img src="<?=resizePhoto($arItem['DETAIL_PICTURE'])?>" class="hover">
+									<? if ($arItem['PROPERTIES']['PHOTOS']['VALUE']): ?>
+										<img src="<?=resizePhoto(CFile::GetByID($arItem['PROPERTIES']['PHOTOS']['VALUE'][0])->Fetch())?>">
+										<img src="<?=resizePhoto(CFile::GetByID($arItem['PROPERTIES']['PHOTOS']['VALUE'][1])->Fetch())?>" class="hover">
+									<? endif; ?>
 								</div>
 								<div class="b-catalog-item-text"><?=$arItem['NAME']?></div>
 								<div class="b-catalog-item-text"><?=$price?> руб.</div>

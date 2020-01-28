@@ -43,6 +43,7 @@ $this->setFrameMode(true);
 
 					<? $price = convertPrice($offer["PRICES"]["PRICE"]["VALUE"]); ?>
 					<? $discountPrice = convertPrice($offer["PRICES"]["PRICE"]["DISCOUNT_VALUE"]); ?>
+
 				<? endforeach; ?>
 
 				<? if ($minVal != $maxVal): ?>
@@ -56,8 +57,8 @@ $this->setFrameMode(true);
 
 				<a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="b-catalog-item" id="<?=$this->GetEditAreaId($arItem['ID']);?>">
 					<div class="b-catalog-item-img">
-						<img src="<?=resizePhoto($arItem['PREVIEW_PICTURE'])?>">
-						<img src="<?=resizePhoto($arItem['DETAIL_PICTURE'])?>" class="hover">
+						<img src="<?=resizePhoto(CFile::GetByID($arItem['PROPERTIES']['PHOTOS']['VALUE'][0])->Fetch())?>">
+						<img src="<?=resizePhoto(CFile::GetByID($arItem['PROPERTIES']['PHOTOS']['VALUE'][1])->Fetch())?>" class="hover">
 					</div>
 					<div class="b-catalog-item-text"><?=$arItem['NAME']?></div>
 					<div class="b-catalog-item-text"><?=$price?> руб.</div>

@@ -108,7 +108,7 @@ $APPLICATION->SetTitle("Каталог");?>
 						"PRODUCT_PROPS_VARIABLE" => "prop",
 						"PRODUCT_QUANTITY_VARIABLE" => "",
 						"PRODUCT_SUBSCRIPTION" => "N",
-						"PROPERTY_CODE" => array(0=>"SUBTITLE",1=>"",),
+						"PROPERTY_CODE" => array(0=>""),
 						"SECTION_CODE" => $_REQUEST["SECTION_CODE"],
 						"SECTION_CODE_PATH" => "",
 						"SECTION_ID" => "",

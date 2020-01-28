@@ -1,7 +1,6 @@
-<?
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Каталог");
-?>
+<? require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+$APPLICATION->SetTitle("Каталог"); ?>
+<div class="b-detail-page">
 <?$APPLICATION->IncludeComponent(
 	"bitrix:catalog.element",
 	"catalog",
@@ -106,4 +105,5 @@ $APPLICATION->SetTitle("Каталог");
 		"USE_VOTE_RATING" => "N"
 	)
 );?>
+</div>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

@@ -1,10 +1,12 @@
 $(document).ready(function(){	
 
-    var myHeight;
-    var isDesktop = false;
-    var isTablet = false;
-    var isMobile = false;
-    var heightOrig = 0;
+    var myHeight = 0,
+        myWidth = 0,
+        isDesktop = false,
+        isTablet = false,
+        isMobile = false,
+        countQueue = {},
+        heightOrig = 0;
 
     function resize(){
        if( typeof( window.innerWidth ) == 'number' ) {
@@ -35,14 +37,44 @@ $(document).ready(function(){
 
         positionSearch();
 
-        //Пересчитать высоту мобильного меню
         if(isMobile){
+            //Пересчитать высоту меню
             $(".b-menu-mobile").css("height", String(window.innerHeight - $(".b-header").outerHeight()) + "px");
             $(".b-menu").css("max-height", "none");
+
+            $(".mobile-slider").each(function() {
+                if(!$(this).hasClass("slick-initialized")){
+                    $(this).slick({
+                        dots: true,
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        cssEase: 'ease', 
+                        speed: 500,
+                        arrows: false
+                    });  
+                }
+            });
+            $(".price-cont-desktop .b-cart-item-price-cont").each(function() {
+                var $this = $(this);
+                $this.parents(".b-cart-item").find(".price-cont-mobile").append($this);
+            });
         }else{
             $(".b-menu-mobile").css("height", "auto");
             $(".b-menu").css("max-height", String(window.innerHeight - $(".b-header").outerHeight()) + "px");
+
+            $(".mobile-slider").each(function() {//удалить слайдеры
+                if($(this).hasClass("slick-initialized")){
+                    $(this).slick('unslick');
+                }
+            });
+            $(".price-cont-mobile .b-cart-item-price-cont").each(function() {
+                var $this = $(this);
+                $this.parents(".b-cart-item").find(".price-cont-desktop").append($this);
+            });
         }
+
+
 
         // if(heightOrig && !isMobile) {
         //     var docHeight = (myHeight - 40 > heightOrig) ? heightOrig : myHeight - 40;
@@ -85,9 +117,13 @@ $(document).ready(function(){
 
     $.fn.placeholder();
 
-    if( !isMobile && $('.stick').length) {
-        $(".stick").stick_in_parent({offset_top: 40});  
+    function initStick(){
+        if( !isMobile && $('.stick').length) {
+            $(".stick").stick_in_parent({offset_top: 40})
+        }
     }
+
+    initStick();
 
     function positionSearch() {
         if($(".b-search-content").hasClass("results-open")){
@@ -309,12 +345,12 @@ $(document).ready(function(){
         $('html').removeClass('cart-open');
     });
 
-    var maxBasketCount = 999;
+    var maxBasketCount = 20;
 
     $('.b-cart-item-plus').on('click',function(){
         var $input = $(this).parents('.b-cart-item-count').find('.input-count');
 
-        if ($input.attr('data-quantity') != 0) {
+        if ($input.parents(".b-cart-item-info").attr('data-quantity') != 0) {
             var count = parseInt($input.val()) + 1;
             count = (count > maxBasketCount || isNaN(count) === true) ? maxBasketCount : count;
             $input.val(count).change();
@@ -332,132 +368,137 @@ $(document).ready(function(){
         return false;
     });
 
-    $(document).on('change', '.input-count', function(){
-        
-        if($(this).val()*1 > $(this).attr('data-quantity')*1){
-            $(this).val(Number($(this).attr('data-quantity')));
+    $(document).on('change', '.input-count, .select-count', function(){
+        changeQuantity($(this).parents(".b-cart-item"), $(this).val()*1);
+    });
+
+    function changeQuantity($item, count) {
+        var $input = $item.find(".input-count");
+        var $select = $item.find(".select-count");
+
+        if(count > $item.attr('data-quantity')*1){
+            $input.val(Number($item.attr('data-quantity')));
+            $select.val($item.attr('data-quantity'));
+        }else{
+            $input.val(count);
+            $select.val(count);
         }
 
-        if ($(this).val()*1 == 0){
-            var item = $(this).parents('.b-cart-item');
-            item.animate({
+        if (count == 0){
+            $item.animate({
                 height : 'hide',
                 margin : 'hide',
                 opacity : 'hide'
             }, 300, 'swing', function(){
-                item.remove();
+                $item.remove();
             });
         }
-
-    });
-
+    }
 
 /***************** cart *************************/
 
 /***************** detail options hover *************************/
 
+    function optionHoverInit(){
+        $(document).on('mouseenter', '.b-detail-option', function(){
+            var offsetLeft = $(this)[0].offsetLeft;
+            var offsetTop = $(this)[0].offsetTop;
+            var hover = $(this).parents('.b-detail-option-cont').find('.b-detail-option-hover');
+            
+            if ($(this).parents('.b-detail-option-cont').hasClass('b-detail-color')) {
+                var borderColor = ($(this).hasClass('black-tick')) ? '#B7968B' : '#FFFFFF';
+                hover.css('border-color', borderColor);
+            }
 
-    $(document).on('mouseenter', '.b-detail-option', function(){
-        var offsetLeft = $(this)[0].offsetLeft;
-        var offsetTop = $(this)[0].offsetTop;
-        var hover = $(this).parents('.b-detail-option-cont').find('.b-detail-option-hover');
-        
-        if ($(this).parents('.b-detail-option-cont').hasClass('b-detail-color')) {
-            var borderColor = ($(this).hasClass('black-tick')) ? '#B7968B' : '#FFFFFF';
-            hover.css('border-color', borderColor);
-        }
-
-        hover.stop().animate({
-            left : offsetLeft,
-            top : offsetTop,
-        }, 300, "swing");
-    });
-
-    $(document).on('mouseleave', '.b-detail-option-list-cont', function(){
-        var offsetLeft = $(this).parents('.b-detail-option-cont').find('.active')[0].offsetLeft;
-        var offsetTop = $(this).parents('.b-detail-option-cont').find('.active')[0].offsetTop;
-        var hover = $(this).parents('.b-detail-option-cont').find('.b-detail-option-hover');
-        
-        if ($(this).parents('.b-detail-option-cont').hasClass('b-detail-color')) {
-            var borderColor = ($(this).parents('.b-detail-option-cont').find('.active').hasClass('black-tick')) ? '#B7968B' : '#FFFFFF';
-            hover.css('border-color', borderColor);
-        }
-
-        hover.stop().animate({
-            left : offsetLeft,
-            top : offsetTop
-        }, 300, "swing");
-    });
-
-    $(document).on('click', '.b-detail-option', function(){
-        var cont = $(this).parents('.b-detail-option-cont');
-        cont.find('.active').removeClass('active');
-        $(this).addClass('active');
-
-        if ($(this).hasClass('b-color-option')) {
-            var item = $(this).find('input').attr('data-item');
-            $('.b-detail-small-img-list-cont').find('.b-detail-small-img[data-img='+item+']').trigger('click').trigger('mouseenter');
-        }
-
-        cont.find('.option-text').text($(this).find('input').attr('data-option'));
-    })
-
-    $(document).find('.b-detail-option-list-cont').each(function(){
-        var offsetLeft = $(this).find('.active')[0].offsetLeft;
-        var offsetTop = $(this).find('.active')[0].offsetTops;
-        var hover = $(this).parents('.b-detail-option-cont').find('.b-detail-option-hover');
-        hover.css({
-            'left' : offsetLeft,
-            'top' : offsetTop,
-            'opacity' : '1'
+            hover.stop().animate({
+                left : offsetLeft,
+                top : offsetTop,
+            }, 300, "swing");
         });
-    });
 
+        $(document).on('mouseleave', '.b-detail-option-list-cont', function(){
+            var offsetLeft = $(this).parents('.b-detail-option-cont').find('.active')[0].offsetLeft;
+            var offsetTop = $(this).parents('.b-detail-option-cont').find('.active')[0].offsetTop;
+            var hover = $(this).parents('.b-detail-option-cont').find('.b-detail-option-hover');
+            
+            if ($(this).parents('.b-detail-option-cont').hasClass('b-detail-color')) {
+                var borderColor = ($(this).parents('.b-detail-option-cont').find('.active').hasClass('black-tick')) ? '#B7968B' : '#FFFFFF';
+                hover.css('border-color', borderColor);
+            }
+
+            hover.stop().animate({
+                left : offsetLeft,
+                top : offsetTop
+            }, 300, "swing");
+        });
+
+        $(document).on('click', '.b-detail-size input', function(){
+            var cont = $(this).parents('.b-detail-option-cont');
+            cont.find('.active').removeClass('active');
+            cont.find('.option-text').text($(this).attr('data-option'));
+            $(this).parents('.b-detail-option').addClass('active');
+        })
+
+        $(document).find('.b-detail-option-list-cont').each(function(){
+            var offsetLeft = $(this).find('.active')[0].offsetLeft;
+            var offsetTop = $(this).find('.active')[0].offsetTops;
+            var hover = $(this).parents('.b-detail-option-cont').find('.b-detail-option-hover');
+            hover.css({
+                'left' : offsetLeft,
+                'top' : offsetTop,
+                'opacity' : '1'
+            });
+        });
+    }
+
+    optionHoverInit();
 
 /***************** detail options hover *************************/
 
 /***************** detail photo hover *************************/
 
-
-    $(document).on('mouseenter', '.b-detail-small-img', function(){
-        var offsetTop = $(this)[0].offsetTop*1 - 3;
-        var hover = $(this).parents('.b-detail-small-img-list').find('.b-detail-small-img-hover');
-
-        hover.stop().animate({
-            top : offsetTop,
-        }, 300, "swing");
-    });
-
-    $(document).on('mouseleave', '.b-detail-small-img-list', function(){
-        var offsetTop = $(this).find('.active')[0].offsetTop*1 - 3;
-        var hover = $(this).find('.b-detail-small-img-hover');
-
-        hover.stop().animate({
-            top : offsetTop,
-        }, 300, "swing");
-    });
-
     var isImgClick = false;
 
-    $(document).on('click', '.b-detail-small-img', function(){
-        isImgClick = true;
-        var img = $('.b-detail-big-img-list').find('[data-img='+$(this).attr('data-img')+']');
+    function photoHoverInit(){
+        $(document).on('mouseenter', '.b-detail-small-img', function(){
+            var offsetTop = $(this)[0].offsetTop*1 - 3;
+            var hover = $(this).parents('.b-detail-small-img-list').find('.b-detail-small-img-hover');
 
-        $('.b-detail-small-img.active').removeClass('active');
-        $(this).addClass('active');
-
-        $("body, html").animate({
-            scrollTop : img.offset().top-40
-        },300, function(){
-            isImgClick = false;
+            hover.stop().animate({
+                top : offsetTop,
+            }, 300, "swing");
         });
-    })
+
+        $(document).on('mouseleave', '.b-detail-small-img-list', function(){
+            var offsetTop = $(this).find('.active')[0].offsetTop*1 - 3;
+            var hover = $(this).find('.b-detail-small-img-hover');
+
+            hover.stop().animate({
+                top : offsetTop,
+            }, 300, "swing");
+        });
+
+        $(document).on('click', '.b-detail-small-img', function(){
+            isImgClick = true;
+            var img = $('.b-detail-big-img-list').find('[data-img='+$(this).attr('data-img')+']');
+
+            $('.b-detail-small-img.active').removeClass('active');
+            $(this).addClass('active');
+
+            $("body, html").animate({
+                scrollTop : img.offset().top-40
+            },300, function(){
+                isImgClick = false;
+            });
+        })
+    }
+
+    photoHoverInit();
+    changeHoverImg(true);
 
     $(document).on('scroll', function(){
         changeHoverImg(false);
     });
-
-    changeHoverImg(true);
 
     function changeHoverImg(isFirst){
 
@@ -511,7 +552,6 @@ $(document).ready(function(){
                 }
             }
         }
-
     }
 
 
@@ -645,86 +685,29 @@ $(".b-menu-mobile a").on("click", function(){
 
 /***************** menu *************************/
 
+/********** detail handlebars ******************/
+
+$(document).on('click', '.b-color-option input', function(){
+    var item = $(this).attr('data-item');
+    var id = $(this).attr('id');
+
+    var template = Handlebars.compile($('#detail-template').html());
+    $('.b-detail .b-block').html(template(offers[item]));
+
+    $('.b-color-option').removeClass('active');
+    $('#'+id).parents('.b-color-option').addClass('active');
+    $('#'+id).attr('checked', true);
+
+    initStick();
+    optionHoverInit();
+    photoHoverInit();
+    changeHoverImg(true);
+
+});
+
+/********** detail handlebars ******************/
+
 /********** add to cart detail ******************/
-
-$(document).on('change', '.b-detail-info-cont', function(){
-    var offer = getCurrentOffer();
-    $('#item-article').text(offer.ARTICLE);
-    $('.b-detail-price').text(convertPrice(offer.PRICE) +' руб.');
-    return false;
-});
-
-$(document).on('click', '.b-btn-cart', function(){
-    var offer = getCurrentOffer();
-})
-
-var cartTimeout = 0,
-successTimeout = 0;
-
-$(document).on("click", ".b-btn-cart", function(){
-
-    if ($(this).hasClass('unavailable')) {
-        return false;
-    }
-
-    var $this = $(this),
-        $cap = $this.siblings('.b-btn-to-cart-cap'),
-        href = $(this).attr("href"),
-        id = $(this).attr("data-id"),
-        quantity = $(this).parents('.b-detail-item').find('input[name=count]').val();
-
-    clearTimeout(cartTimeout);
-    progress.start(1.5);
-    $cap.removeClass('hide').addClass('after-load');
-    $this.addClass('hide');
-
-    url = href+"&ELEMENT_ID="+id+"&quantity="+quantity;
-    $.ajax({
-        type: "GET",
-        url: url,
-        success: function(msg){
-            progress.end();
-            if( isValidJSON(msg) ){
-                var json = JSON.parse(msg);
-                if( json.result == "success" ){
-                    if( json.action == "reload" ){
-                        window.location.reload();
-                    }else{
-                        updateBasket(json.count, json.sum);
-                    }
-                    $cap.removeClass('error');
-                    $cap.find('.b-cap-text').text('Товар успешно добавлен');
-                }else{
-                    $cap.addClass('error');
-                    $cap.find('.b-cap-text').text((json.error) ? json.error : 'Ошибка!');
-                }
-            }else{
-                $cap.addClass('error');
-                $cap.find('.b-cap-text').text('Ошибка!');
-            }
-        },
-        error: function(){
-            $cap.addClass('error');
-            $cap.find('.b-cap-text').text('Ошибка!');
-        },
-        complete : function(){
-            $this.siblings('.b-btn-to-cart-cap').addClass('loaded');
-            setTimeout(function(){
-                $cap.removeClass('loaded');
-                $cap.addClass('hide');
-                $this.removeClass('hide');
-            }, 1500);
-        }
-    });
-    
-    return false;
-});
-
-function getCurrentOffer(){
-    var color = $('.b-detail-color').find('input:checked').attr('id');
-    var size = $('.b-detail-size').find('input:checked').attr('id');
-    return offers[color][size];
-}
 
 function convertPrice(price){
     return new Intl.NumberFormat('ru-RU').format(Math.round(price));
