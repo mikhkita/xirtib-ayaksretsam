@@ -5,7 +5,10 @@ $(document).ready(function(){
         isDesktop = false,
         isTablet = false,
         isMobile = false,
-        countQueue = {},
+        queues = {
+            quantity : 0,
+        },
+        timeoutQuantity = null,
         heightOrig = 0;
 
     function resize(){
@@ -124,6 +127,15 @@ $(document).ready(function(){
     }
 
     initStick();
+
+    var decCases = [2, 0, 1, 1, 1, 2];
+    function decOfNum(number, titles){
+        return titles[ (number%100>4 && number%100<20)? 2 : decCases[(number%10<5)?number%10:5] ];
+    }
+
+    function formatNumber(number) {
+        return String(number).replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ');
+    }
 
     function positionSearch() {
         if($(".b-search-content").hasClass("results-open")){
@@ -375,17 +387,16 @@ $(document).ready(function(){
     function changeQuantity($item, count) {
         var $input = $item.find(".input-count");
         var $select = $item.find(".select-count");
+        var url = "/ajax/index.php";
 
-        if(count > $item.attr('data-quantity')*1){
-            $input.val(Number($item.attr('data-quantity')));
-            $select.val($item.attr('data-quantity'));
-        }else{
-            $input.val(count);
-            $select.val(count);
-        }
+        count = (count > maxBasketCount || isNaN(count) === true) ? maxBasketCount : count;
+        count = (count > $item.attr('data-quantity')*1) ? Number($item.attr('data-quantity')) : count;
 
-        if (count == 0){
-            $item.animate({
+        $input.val(count);
+        $select.val(count);
+
+        if(count < 1){
+            $item.addClass("hidden").animate({
                 height : 'hide',
                 margin : 'hide',
                 opacity : 'hide'
@@ -393,7 +404,81 @@ $(document).ready(function(){
                 $item.remove();
             });
         }
+
+        updateMiniCart();
+
+        if(timeoutQuantity){
+            clearTimeout(timeoutQuantity);
+        }
+        timeoutQuantity = setTimeout(function () {
+            queues.quantity++;
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: { 
+                    action : "QUANTITY",
+                    QUANTITY : count,
+                    ELEMENT_ID : $item.attr("data-id"),
+                },
+                success: function(msg){
+                    var reg = /<!--([\s\S]*?)-->/mig;
+                    msg = msg.replace(reg, "");
+                    var json = JSON.parse(msg);
+
+                    queues.quantity--;
+                    console.log([json.id, json.quantity, queues.quantity]);
+
+                    if( json.result == "success" ){
+                        if( queues.quantity == 0 ){
+                            $input.val(json.quantity);
+                            $select.val(json.quantity);
+
+                            updateMiniCart();
+                        }
+                    }else{
+                        alert("Ошибка изменения количества, пожалуйста, обновите страницу");
+                    }
+                },
+                error: function(){
+                    queues.quantity--;
+                }
+            });
+        }, 300);
+
     }
+
+    function updateMiniCart(){
+        var sum = 0;
+        $(".b-cart-item:not(.hidden)").each(function(){
+            var priceTotal = $(this).attr("data-price-total").replace(/[^0-9\.]+/g,"")*1,
+                priceBase = $(this).attr("data-price-base").replace(/[^0-9\.]+/g,"")*1,
+                count = $(this).find(".input-count").val().replace(/[^0-9\.]+/g,"")*1;
+            $(this).find(".b-cart-item-price .item-val").text(formatNumber(priceTotal * count));
+            $(this).find(".b-cart-item-price-discount .item-val").text(formatNumber(priceBase * count));
+            sum += priceTotal * count;
+        });
+
+        $(".b-cart-sum-cont .item-val").text(formatNumber(sum));
+
+        //обновить счетчик корзины
+        var count = $(".b-cart-item:not(.hidden)").length;
+        var total = $(".b-cart-sum-cont .item-val").text();
+        $(".b-cart-count").text(count);
+        $(".b-cart-text .item-val").text(total);
+
+        $(".b-cart-text-dec").text(decOfNum(count, ['товар', 'товара', 'товаров']));
+
+        if(count > 0){
+            $(".b-cart-text-cont").addClass("show");
+            $(".b-cart-inner-empty").addClass("hide");
+            $(".b-cart-inner-list").removeClass("hide");
+        }else{
+            $(".b-cart-text-cont").removeClass("show");
+            $(".b-cart-inner-empty").removeClass("hide");
+            $(".b-cart-inner-list").addClass("hide");
+        }
+    }
+    updateMiniCart();
 
 /***************** cart *************************/
 

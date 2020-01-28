@@ -54,13 +54,21 @@ $isDetail = $GLOBALS["isDetail"] = ($urlArr[1] == "catalog" && isset($urlArr[4])
 				<div class="b-cart-header">Ваша корзина</div>
 				<a href="#" class="b-cart-close icon-close"></a>
 			</div>
+			<div class="b-cart-inner-empty hide">
+				<p>Ваша корзина пуста.</p>
+				<a href="/catalog/" class="dashed">Перейти в каталог</a>
+			</div>
 			<div class="b-cart-inner-list">
 				<form action="#">
 					<?
+					unset($arItem);
 					$arItem["MAX_QUANTITY"] = 5;
 					$arItem["QUANTITY"] = 2;
+					$arItem["ID"] = 21;
+					$arItem["BASE_PRICE"] = 5520;//базовая цена
+					$arItem["TOTAL_PRICE"] = 4820;//итоговая цена
 					?>
-					<div class="b-cart-item" data-quantity="<?=$arItem["MAX_QUANTITY"]?>">
+					<div class="b-cart-item" data-id="<?=$arItem["ID"]?>" data-quantity="<?=$arItem["MAX_QUANTITY"]?>" data-price-base="<?=$arItem["BASE_PRICE"]?>" data-price-total="<?=$arItem["TOTAL_PRICE"]?>">
 						<div class="b-cart-item-img" style="background-image: url(<?=SITE_TEMPLATE_PATH?>/i/cart-1.jpg);"></div>
 						<div class="b-cart-item-info">
 							<div class="b-cart-item-name">Водолазка тонкой вязки</div>
@@ -71,7 +79,6 @@ $isDetail = $GLOBALS["isDetail"] = ($urlArr[1] == "catalog" && isset($urlArr[4])
 								<a href="#" class="b-cart-item-minus icon-minus"></a>
 								<div class="b-cart-item-input">
 									<input type="text" name="item-1-count" class="input-count" value="<?=$arItem["QUANTITY"]?>" oninput="this.value = this.value.replace(/\D/g, '')">
-									<input type="hidden" name="item-1-price" value="5200">
 								</div>
 								<a href="#" class="b-cart-item-plus icon-plus"></a>
 							</div>
@@ -88,16 +95,20 @@ $isDetail = $GLOBALS["isDetail"] = ($urlArr[1] == "catalog" && isset($urlArr[4])
 						</div>
 						<div class="price-cont-desktop">
 							<div class="b-cart-item-price-cont">
-								<div class="b-cart-item-price">5 200 руб.</div>
-								<div class="b-cart-item-price-discount">7 500 руб.</div>
+								<div class="b-cart-item-price"><span class="item-val"><?=convertPrice($arItem["BASE_PRICE"]);?></span> руб.</div>
+								<div class="b-cart-item-price-discount"><span class="item-val"><?=convertPrice($arItem["TOTAL_PRICE"]);?></span> руб.</div>
 							</div>
 						</div>
 					</div>
 					<?
+					unset($arItem);
 					$arItem["MAX_QUANTITY"] = 100;
 					$arItem["QUANTITY"] = 1;
+					$arItem["ID"] = 21;
+					$arItem["BASE_PRICE"] = 9500;//базовая цена
+					$arItem["TOTAL_PRICE"] = 7800;//итоговая цена
 					?>
-					<div class="b-cart-item" data-quantity="<?=$arItem["MAX_QUANTITY"]?>">
+					<div class="b-cart-item" data-id="<?=$arItem["ID"]?>" data-quantity="<?=$arItem["MAX_QUANTITY"]?>" data-price-base="<?=$arItem["BASE_PRICE"]?>" data-price-total="<?=$arItem["TOTAL_PRICE"]?>">
 						<div class="b-cart-item-img" style="background-image: url(<?=SITE_TEMPLATE_PATH?>/i/cart-2.jpg);"></div>
 						<div class="b-cart-item-info">
 							<div class="b-cart-item-name">Юбка миди из твита</div>
@@ -108,7 +119,6 @@ $isDetail = $GLOBALS["isDetail"] = ($urlArr[1] == "catalog" && isset($urlArr[4])
 								<a href="#" class="b-cart-item-minus icon-minus"></a>
 								<div class="b-cart-item-input">
 									<input type="text" name="item-1-count" class="input-count" value="<?=$arItem["QUANTITY"]?>" oninput="this.value = this.value.replace(/\D/g, '')">
-									<input type="hidden" name="item-1-price" value="7980">
 								</div>
 								<a href="#" class="b-cart-item-plus icon-plus"></a>
 							</div>
@@ -125,15 +135,19 @@ $isDetail = $GLOBALS["isDetail"] = ($urlArr[1] == "catalog" && isset($urlArr[4])
 						</div>
 						<div class="price-cont-desktop">
 							<div class="b-cart-item-price-cont">
-								<div class="b-cart-item-price">7 980 руб.</div>
+								<div class="b-cart-item-price"><span class="item-val"><?=convertPrice($arItem["BASE_PRICE"]);?></span> руб.</div>
+								<div class="b-cart-item-price-discount"><span class="item-val"><?=convertPrice($arItem["TOTAL_PRICE"]);?></span> руб.</div>
 							</div>
 						</div>
 					</div>
 					<?
+					unset($arItem);
 					$arItem["MAX_QUANTITY"] = 10;
 					$arItem["QUANTITY"] = 2;
+					$arItem["ID"] = 21;
+					$arItem["TOTAL_PRICE"] = 12720;//итоговая цена
 					?>
-					<div class="b-cart-item" data-quantity="<?=$arItem["MAX_QUANTITY"]?>">
+					<div class="b-cart-item" data-id="<?=$arItem["ID"]?>" data-quantity="<?=$arItem["MAX_QUANTITY"]?>" data-price-base="<?=$arItem["BASE_PRICE"]?>" data-price-total="<?=$arItem["TOTAL_PRICE"]?>">
 						<div class="b-cart-item-img" style="background-image: url(<?=SITE_TEMPLATE_PATH?>/i/cart-3.jpg);"></div>
 						<div class="b-cart-item-info">
 							<div class="b-cart-item-name">Туфли с открытой пяткой</div>
@@ -144,7 +158,6 @@ $isDetail = $GLOBALS["isDetail"] = ($urlArr[1] == "catalog" && isset($urlArr[4])
 								<a href="#" class="b-cart-item-minus icon-minus"></a>
 								<div class="b-cart-item-input">
 									<input type="text" name="item-1-count" class="input-count" value="<?=$arItem["QUANTITY"]?>" oninput="this.value = this.value.replace(/\D/g, '')">
-									<input type="hidden" name="item-1-price" value="7980">
 								</div>
 								<a href="#" class="b-cart-item-plus icon-plus"></a>
 							</div>
@@ -161,15 +174,18 @@ $isDetail = $GLOBALS["isDetail"] = ($urlArr[1] == "catalog" && isset($urlArr[4])
 						</div>
 						<div class="price-cont-desktop">
 							<div class="b-cart-item-price-cont">
-								<div class="b-cart-item-price">7 980 руб.</div>
+								<div class="b-cart-item-price"><span class="item-val"><?=convertPrice($arItem["TOTAL_PRICE"]);?></span> руб.</div>
 							</div>
 						</div>
 					</div>
 					<?
+					unset($arItem);
 					$arItem["MAX_QUANTITY"] = 20;
 					$arItem["QUANTITY"] = 3;
+					$arItem["ID"] = 21;
+					$arItem["TOTAL_PRICE"] = 10000;//итоговая цена
 					?>
-					<div class="b-cart-item" data-quantity="<?=$arItem["MAX_QUANTITY"]?>">
+					<div class="b-cart-item" data-id="<?=$arItem["ID"]?>" data-quantity="<?=$arItem["MAX_QUANTITY"]?>" data-price-base="<?=$arItem["BASE_PRICE"]?>" data-price-total="<?=$arItem["TOTAL_PRICE"]?>">
 						<div class="b-cart-item-img" style="background-image: url(<?=SITE_TEMPLATE_PATH?>/i/cart-4.jpg);"></div>
 						<div class="b-cart-item-info">
 							<div class="b-cart-item-name">Сумка кожаная с длинным ремнем</div>
@@ -180,7 +196,6 @@ $isDetail = $GLOBALS["isDetail"] = ($urlArr[1] == "catalog" && isset($urlArr[4])
 								<a href="#" class="b-cart-item-minus icon-minus"></a>
 								<div class="b-cart-item-input">
 									<input type="text" name="item-1-count" class="input-count" value="<?=$arItem["QUANTITY"]?>" oninput="this.value = this.value.replace(/\D/g, '')">
-									<input type="hidden" name="item-1-price" value="13200">
 								</div>
 								<a href="#" class="b-cart-item-plus icon-plus"></a>
 							</div>
@@ -197,12 +212,11 @@ $isDetail = $GLOBALS["isDetail"] = ($urlArr[1] == "catalog" && isset($urlArr[4])
 						</div>
 						<div class="price-cont-desktop">
 							<div class="b-cart-item-price-cont">
-								<div class="b-cart-item-price">13 200 руб.</div>
-								<div class="b-cart-item-price-discount">17 900 руб.</div>
+								<div class="b-cart-item-price"><span class="item-val"><?=convertPrice($arItem["TOTAL_PRICE"]);?></span> руб.</div>
 							</div>
 						</div>
 					</div>
-					<div class="b-cart-sum-cont">Итого: 32 720 руб.</div>
+					<div class="b-cart-sum-cont">Итого: <span class="item-val">32 720</span> руб.</div>
 					<a href="#" class="b-btn b-btn-brown">Оформить заказ</a>
 				</form>
 			</div>
@@ -226,7 +240,7 @@ $isDetail = $GLOBALS["isDetail"] = ($urlArr[1] == "catalog" && isset($urlArr[4])
 							<div class="b-cart-text-cont">
 								<div class="b-cart-text-inner">
 									<div class="b-cart-count">5</div>
-									<div class="b-cart-text"> товаров на сумму 32 500 руб.</div>
+									<div class="b-cart-text"> <span class="b-cart-text-dec">товаров</span> на сумму <span class="item-val">32 500</span> руб.</div>
 								</div>
 							</div>
 						</div>
@@ -244,7 +258,7 @@ $isDetail = $GLOBALS["isDetail"] = ($urlArr[1] == "catalog" && isset($urlArr[4])
 								<img src="{{img_hover}}" class="hover">
 							</div>
 							<div class="b-catalog-item-text">{{name}}</div>
-							<div class="b-catalog-item-text">{{price}} руб.</div>
+							<div class="b-catalog-item-text">{{#if price}} {{price}} руб. {{/if}}</div>
 						</a>
 					{{/each}}
 				{{else}}

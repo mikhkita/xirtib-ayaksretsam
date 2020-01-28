@@ -15,22 +15,45 @@
 <?
 global $APPLICATION;
 $APPLICATION->RestartBuffer();
+CModule::IncludeModule("iblock");
 
-$result = array("status" => true);
+$result = array("status" => true, "items" => array());
 
 if(count($arResult["SEARCH"])){
-	$items = array();
+
+	$IDs = array();
 	foreach($arResult["SEARCH"] as $arItem){
-		$items[] = array(
-			"url" => $arItem["URL"],
-			// "img" => SITE_TEMPLATE_PATH."/i/item-".$i.".jpg",
-			// "img_hover" => SITE_TEMPLATE_PATH."/i/item-6.jpg",
-			"name" => $arItem["TITLE"],
-			// "price" => "16 500"
-		);
+		$IDs[] = $arItem["ITEM_ID"];
 	}
-	$result["items"] = $items;
-}else{
+
+	$arInfo = CCatalogSKU::GetInfoByProductIBlock(1);
+	if(count($IDs)){
+		$items = array();
+		$arFilter = Array("IBLOCK_ID"=>1, "ACTIVE"=>"Y", "ID"=>$IDs);
+		$res = CIBlockElement::GetList(array(), $arFilter, false, array(), array());
+		while($ob = $res->GetNextElement()){
+			$arFields = $ob->GetFields();
+			$price = "";
+			if (is_array($arInfo)) { 
+			    $rsOffers = CIBlockElement::GetList(array(),array('IBLOCK_ID' => $arInfo['IBLOCK_ID'], 'PROPERTY_'.$arInfo['SKU_PROPERTY_ID'] => $arFields["ID"])); 
+			    if ($arOffer = $rsOffers->GetNextElement()) { 
+			    	$arFieldsOffer = $arOffer->GetFields();
+			    	$price = CPrice::GetBasePrice($arFieldsOffer["ID"]);
+			    } 
+			}
+			$items[] = array(
+				"url" => $arFields["DETAIL_PAGE_URL"],
+				"img" => CFile::GetPath($arFields["PREVIEW_PICTURE"]),
+				"img_hover" => CFile::GetPath($arFields["DETAIL_PICTURE"]),
+				"name" => $arFields["NAME"],
+				"price" => convertPrice($price["PRICE"])
+			);
+		}
+		$result["items"] = $items;
+
+	}
+}
+if(empty($result["items"])){
 	$result["status"] = false;
 	$result["errorMsg"] = "Поиск не дал результата. Попробуйте изменить запрос.";
 }
