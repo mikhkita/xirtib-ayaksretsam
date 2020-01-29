@@ -99,13 +99,13 @@
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/slick.min.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitCarousel.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitAnimate.js"></script>
+<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitProgress.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/slideout.min.js"></script>
 <? if( !(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')!==false || strpos($_SERVER['HTTP_USER_AGENT'],'rv:11.0')!==false) ): ?>
 	<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/imask.min.js"></script>
 <? else: ?>
 	<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/jquery.maskedinput.min.js"></script>
 <? endif; ?>
-<script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/template7.min.js"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/KitSend.js?<?=$version?>"></script>
 <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js/main.js?<?=$version?>"></script>
 </body>

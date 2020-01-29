@@ -2087,6 +2087,59 @@ input:-moz-placeholder {
 				.b-detail-description{
 
 				}
+
+.b-btn-cart-cont{
+	position: relative;
+}
+	.b-btn-cart.hide,
+	.b-preloader.hide,
+	.b-cap-text.hide{
+		opacity: 0;
+		visibility: hidden;
+	}
+	.b-btn-cart{
+		position: relative;
+		z-index: 1;
+	}
+	.b-preloader{
+		content: '';
+		z-index: 2;
+		background: url('../i/preloader.svg');
+		background-repeat: no-repeat;
+		background-position: 50% 50%; 
+		background-size: contain;
+		position: absolute;
+		width: 60px;
+		height: 60px;
+		left: calc(50% - 30px);
+		top: 5px;
+		-webkit-transition: opacity .2s, visibility .2s;
+		-moz-transition: opacity .2s, visibility .2s;
+		-ms-transition: opacity .2s, visibility .2s;
+		-o-transition: opacity .2s, visibility .2s;
+		transition: opacity .2s, visibility .2s;
+		opacity: 1;
+		visibility: visible;
+		
+	}
+	.b-cap-text{
+		position: absolute;
+		top: 20px;
+		-webkit-transition: opacity .2s, visibility .2s;
+		-moz-transition: opacity .2s, visibility .2s;
+		-ms-transition: opacity .2s, visibility .2s;
+		-o-transition: opacity .2s, visibility .2s;
+		transition: opacity .2s, visibility .2s;
+		opacity: 1;
+		visibility: visible;
+		width: 100%;
+		display: block;
+		text-align: center;
+		color: #B7968B;
+		font-size: 20px;
+		line-height: 28px;
+		font-family: 'GothamPro-Medium';
+	}
 @media screen and (max-width: 1280px){
 	.b-detail-left{
 		width: calc(50% - 40px);

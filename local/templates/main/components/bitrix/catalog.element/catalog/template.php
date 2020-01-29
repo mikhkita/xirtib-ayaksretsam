@@ -42,7 +42,7 @@ foreach ($arColors as $key => $color) {
 	<div class="b-block">
 		<div class="b-detail-cont">
 			<div class="b-detail-left">
-				<div class="b-detail-big-img-list">
+				<div class="b-detail-big-img-list mobile-slider">
 					<? if ($arResult['PROPERTIES']['PHOTOS']['VALUE']): ?>
 						<? foreach($arResult['PROPERTIES']['PHOTOS']['VALUE'] as $photo): ?>
 							<div class="b-detail-big-img" data-img="item-<?=$photo?>" id="<?=$photo?>">
@@ -115,7 +115,11 @@ foreach ($arColors as $key => $color) {
 						</div>
 					</div>
 					<div class="b-article">Артикул: <span id="item-article"><?=$arResult['PROPERTIES']['ARTICLE']['VALUE']?></span></div>
-					<a href="#" class="b-btn b-btn-brown b-btn-cart">Добавить в корзину</a>
+					<div class="b-btn-cart-cont">
+						<a href="/ajax/?action=ADD2BASKET" data-id="73" class="b-btn b-btn-brown b-btn-cart">Добавить в корзину</a>
+						<span class="b-preloader hide"></span>
+						<span class="b-cap-text hide">Товар успешно добавлен</span>
+					</div>
 					<div class="b-detail-info">
 						<div class="b-detail-payment">
 							<div class="b-detail-payment-text">Принимаем к оплате:</div>
@@ -134,7 +138,7 @@ foreach ($arColors as $key => $color) {
 <script id="detail-template" type="text/x-handlebars-template">
 	<div class="b-detail-cont">
 		<div class="b-detail-left">
-			<div class="b-detail-big-img-list">
+			<div class="b-detail-big-img-list mobile-slider">
 				{{#if PHOTOS}}
 					{{#PHOTOS}}
 						<div class="b-detail-big-img" data-img="item-{{ID}}" id="{{ID}}">
@@ -204,7 +208,11 @@ foreach ($arColors as $key => $color) {
 					</div>
 				</div>
 				<div class="b-article">Артикул: <span id="item-article">{{ARTICLE}}</span></div>
-				<a href="#" class="b-btn b-btn-brown b-btn-cart">Добавить в корзину</a>
+				<div class="b-btn-cart-cont">
+					<a href="/ajax/?action=ADD2BASKET" data-id="73" class="b-btn b-btn-brown b-btn-cart">Добавить в корзину</a>
+					<span class="b-preloader hide"></span>
+					<span class="b-cap-text hide">Товар успешно добавлен</span>
+				</div>
 				<div class="b-detail-info">
 					<div class="b-detail-payment">
 						<div class="b-detail-payment-text">Принимаем к оплате:</div>

@@ -33,6 +33,7 @@ if(count($arResult["SEARCH"])){
 		$res = CIBlockElement::GetList(array(), $arFilter, false, array(), array());
 		while($ob = $res->GetNextElement()){
 			$arFields = $ob->GetFields();
+			$arProps = $ob->GetProperties();
 			$price = "";
 			if (is_array($arInfo)) { 
 			    $rsOffers = CIBlockElement::GetList(array(),array('IBLOCK_ID' => $arInfo['IBLOCK_ID'], 'PROPERTY_'.$arInfo['SKU_PROPERTY_ID'] => $arFields["ID"])); 
@@ -43,8 +44,8 @@ if(count($arResult["SEARCH"])){
 			}
 			$items[] = array(
 				"url" => $arFields["DETAIL_PAGE_URL"],
-				"img" => CFile::GetPath($arFields["PREVIEW_PICTURE"]),
-				"img_hover" => CFile::GetPath($arFields["DETAIL_PICTURE"]),
+				"img" => resizePhoto($arProps['PHOTOS']['VALUE'][0]),
+				"img_hover" => resizePhoto($arProps['PHOTOS']['VALUE'][1]),
 				"name" => $arFields["NAME"],
 				"price" => convertPrice($price["PRICE"])
 			);

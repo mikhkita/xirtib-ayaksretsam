@@ -8,6 +8,41 @@ $GLOBALS['APPLICATION']->RestartBuffer();
 $action = (isset($_GET["action"])) ? $_GET["action"] : NULL;
 
 switch ($action) {
+	case 'ADD2BASKET':
+		// $productId = $_GET["element_id"];
+		// $quantity = (isset($_GET["quantity"]))?$_GET["quantity"]:1;
+
+		// if (CModule::IncludeModule("catalog")){
+		//     if (($action == "ADD2BASKET" || $action == "BUY")){
+		//     	Add2BasketByProductID($productId, $quantity);
+		// 		if($ex = $APPLICATION->GetException()){
+  //     				$strError = $ex->GetString();
+  //     				returnError("Ошибка! ".$strError);
+  //     			}
+		//     }
+		// }
+			
+		// $result = getBasketCount();
+
+		// if( isset($_GET["gift"]) ){
+		// 	$result["action"] = "reload";
+		// }
+
+		// returnSuccess( $result );
+
+		returnSuccess(array(
+			"id" => 73,
+			"name" => "Водолазка тонкой вязки",
+			"color" => "коричневый",
+			"size" => "S",
+			"img" => "/local/templates/main/i/cart-1.jpg",
+			"max" => 5,
+			"quantity" => 2,
+			"priceBase" => 6000,
+			"priceTotal" => 5400,
+		));
+
+		break;
 	case 'QUANTITY':
 
 		// if( !isset($_GET["ELEMENT_ID"]) ){
